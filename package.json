@@ -1,0 +1,19 @@
+{
+  "name": "gamemonitor-front",
+  "version": "1.0.0",
+  "description": "frontent for the gamemonitor webstie",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NissimBet/WebDev-Final-Front.git"
+  },
+  "author": "nissim betesh, carlos tamez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NissimBet/WebDev-Final-Front/issues"
+  },
+  "homepage": "https://github.com/NissimBet/WebDev-Final-Front#readme"
+}
