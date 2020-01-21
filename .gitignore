@@ -1,0 +1,20 @@
+# Project dependencies
+.cache
+node_modules
+yarn-error.log
+
+# OSX
+.DS_Store
+
+## Next
+dist
+.next
+
+## Jest
+coverage
+
+# Private files
+.env
+
+# Others
+.vscode
