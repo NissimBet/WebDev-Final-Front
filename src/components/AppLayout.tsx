@@ -5,12 +5,17 @@ import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 import { useRouter } from 'next/router';
-import { Box } from 'rebass';
+import { Box } from '@material-ui/core';
+import Navbar from './Navbar';
 
 //import { UserSession } from '../types/temporal';
 // import { getCurrentUser } from '../hooks';
 
 const GlobalStyle = createGlobalStyle`
+  html, body {
+    min-height: 100vh;
+
+  }
   [data-reach-skip-link] {
     border: 0;
     clip: rect(0 0 0 0);
@@ -40,7 +45,7 @@ interface AppLayoutProps {
 }
 
 const AppLayout: React.FunctionComponent<AppLayoutProps> = ({ children }) => {
-  const router = useRouter();
+  //const router = useRouter();
 
   //const isLoginPage = router?.route.includes('/login') ?? true;
   const isLoginPage = false;
@@ -57,12 +62,8 @@ const AppLayout: React.FunctionComponent<AppLayoutProps> = ({ children }) => {
       </Head>
 
       <GlobalStyle />
-      <SkipNavLink children="Ir a contenido principal" />
-      {isLoginPage ? (
-        <LoginLayout children={children} />
-      ) : (
-        <CommonLayout children={children} />
-      )}
+      <Navbar />
+      <CommonLayout children={children} />
     </React.Fragment>
   );
 };
@@ -70,14 +71,14 @@ const AppLayout: React.FunctionComponent<AppLayoutProps> = ({ children }) => {
 const CommonLayout: React.FunctionComponent<any> = ({ children }) => {
   return (
     <>
-      <Box mx="auto" width={{ max: '1300px' }} p={3}>
+      <Box marginTop={3} maxWidth={1200} marginX="auto" paddingX={3}>
         <SkipNavContent />
         {children}
       </Box>
     </>
   );
 };
-
+/* 
 const LoginLayout: React.FunctionComponent<any> = ({ children }) => {
   return (
     <>
@@ -88,5 +89,5 @@ const LoginLayout: React.FunctionComponent<any> = ({ children }) => {
     </>
   );
 };
-
+ */
 export default AppLayout;

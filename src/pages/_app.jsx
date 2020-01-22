@@ -4,9 +4,11 @@ import { ApolloProvider } from 'react-apollo';
 import nextCookie from 'next-cookies';
 import AppLayout from '../components/AppLayout';
 import withApolloClient from '../../lib/with-apollo-client';
+import NextApp from 'next/app';
 
 import theme from './../utils/theme';
-import { ThemeProvider, StylesProvider, CssBaseline } from '@material-ui/core';
+import { ThemeProvider } from 'styled-components';
+import { CssBaseline } from '@material-ui/core';
 
 function checkUserAuth(ctx) {
   const { token } = nextCookie(ctx);
@@ -33,22 +35,28 @@ function checkUserAuth(ctx) {
     }
   }
 }
+class MyApp extends NextApp {
+  componentDidMount() {
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles && jssStyles.parentNode) {
+      jssStyles.parentNode.removeChild(jssStyles);
+    }
+  }
 
-const MyApp = props => {
-  const { Component, apolloClient, isLoggedIn } = props;
-  return (
-    <ApolloProvider client={apolloClient}>
-      <ThemeProvider theme={theme}>
+  render() {
+    const { Component, apolloClient, isLoggedIn } = this.props;
+    return (
+      <ApolloProvider client={apolloClient}>
         <CssBaseline />
-        <StylesProvider injectFirst>
+        <ThemeProvider theme={theme}>
           <AppLayout isLoggedIn={isLoggedIn}>
             <Component apolloClient={apolloClient} />
           </AppLayout>
-        </StylesProvider>
-      </ThemeProvider>
-    </ApolloProvider>
-  );
-};
+        </ThemeProvider>
+      </ApolloProvider>
+    );
+  }
+}
 
 MyApp.getInitialProps = async initialProps => {
   const { Component, ctx } = initialProps;
