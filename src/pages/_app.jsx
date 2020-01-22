@@ -5,6 +5,9 @@ import nextCookie from 'next-cookies';
 import AppLayout from '../components/AppLayout';
 import withApolloClient from '../../lib/with-apollo-client';
 
+import theme from './../utils/theme';
+import { ThemeProvider, StylesProvider, CssBaseline } from '@material-ui/core';
+
 function checkUserAuth(ctx) {
   const { token } = nextCookie(ctx);
 
@@ -35,9 +38,14 @@ const MyApp = props => {
   const { Component, apolloClient, isLoggedIn } = props;
   return (
     <ApolloProvider client={apolloClient}>
-      <AppLayout isLoggedIn={isLoggedIn}>
-        <Component apolloClient={apolloClient} />
-      </AppLayout>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <StylesProvider injectFirst>
+          <AppLayout isLoggedIn={isLoggedIn}>
+            <Component apolloClient={apolloClient} />
+          </AppLayout>
+        </StylesProvider>
+      </ThemeProvider>
     </ApolloProvider>
   );
 };

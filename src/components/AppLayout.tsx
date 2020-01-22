@@ -3,10 +3,10 @@ import '@reach/skip-nav/styles.css';
 import Head from 'next/head';
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
-import './reset.css';
+
 import { useRouter } from 'next/router';
 import { Box } from 'rebass';
-//import theme from './../utils/theme';
+
 //import { UserSession } from '../types/temporal';
 // import { getCurrentUser } from '../hooks';
 
@@ -55,6 +55,7 @@ const AppLayout: React.FunctionComponent<AppLayoutProps> = ({ children }) => {
         <title>// TODO: Title</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
+
       <GlobalStyle />
       <SkipNavLink children="Ir a contenido principal" />
       {isLoginPage ? (
