@@ -7,6 +7,7 @@ import { createGlobalStyle } from 'styled-components';
 import { useRouter } from 'next/router';
 import { Box } from '@material-ui/core';
 import Navbar from './Navbar';
+import Footer from './Footer';
 
 //import { UserSession } from '../types/temporal';
 // import { getCurrentUser } from '../hooks';
@@ -14,7 +15,6 @@ import Navbar from './Navbar';
 const GlobalStyle = createGlobalStyle`
   html, body {
     min-height: 100vh;
-
   }
   [data-reach-skip-link] {
     border: 0;
@@ -62,8 +62,12 @@ const AppLayout: React.FunctionComponent<AppLayoutProps> = ({ children }) => {
       </Head>
 
       <GlobalStyle />
+
       <Navbar />
+
       <CommonLayout children={children} />
+
+      <Footer />
     </React.Fragment>
   );
 };

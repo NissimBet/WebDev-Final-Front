@@ -132,10 +132,10 @@ const Navbar = () => {
   const classes = useStyle({});
   return (
     <React.Fragment>
-      <AppBar position="fixed">
+      <AppBar position="fixed" style={{ height: 'auto' }}>
         <Toolbar>
           <Box className={classes.root}>
-            <Box flex="1 0 auto">
+            <Box flex="1 0 auto" display="flex" alignItems="center">
               <Typography>Dev Project</Typography>
             </Box>
 
