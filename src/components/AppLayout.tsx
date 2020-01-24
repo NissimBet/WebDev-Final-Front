@@ -5,7 +5,7 @@ import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 import { useRouter } from 'next/router';
-import { Box } from '@material-ui/core';
+import { Box, Paper, makeStyles } from '@material-ui/core';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
@@ -72,13 +72,23 @@ const AppLayout: React.FunctionComponent<AppLayoutProps> = ({ children }) => {
   );
 };
 
+const useStyle = makeStyles(theme => ({
+  root: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: theme.spacing(3),
+  },
+}));
+
 const CommonLayout: React.FunctionComponent<any> = ({ children }) => {
+  const classes = useStyle({});
   return (
     <>
-      <Box marginTop={3} maxWidth={1200} marginX="auto" paddingX={3}>
+      <Paper className={classes.root}>
         <SkipNavContent />
+
         {children}
-      </Box>
+      </Paper>
     </>
   );
 };
