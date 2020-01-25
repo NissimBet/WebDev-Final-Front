@@ -71,7 +71,7 @@ export default () => {
         <Grid item xs={12} md={5}>
           <Subtitle className={classes.SubtitleText}>Links</Subtitle>
           <Box className={classes.flexDoubleCol}>
-            <FooterLink className={classes.linkText} link="#">
+            <FooterLink className={classes.linkText} link="/">
               Home
             </FooterLink>
 
@@ -83,8 +83,8 @@ export default () => {
               About Us
             </FooterLink>
 
-            <FooterLink className={classes.linkText} link="#">
-              League Of Legends
+            <FooterLink className={classes.linkText} link="/login">
+              Login
             </FooterLink>
 
             <FooterLink className={classes.linkText} link="#">
