@@ -75,7 +75,7 @@ export default () => {
               Home
             </FooterLink>
 
-            <FooterLink className={classes.linkText} link="#">
+            <FooterLink className={classes.linkText} link="/AboutUs">
               Contact Us
             </FooterLink>
 

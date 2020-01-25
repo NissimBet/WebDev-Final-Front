@@ -7,6 +7,7 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  Avatar,
 } from '@material-ui/core';
 import { Formik } from 'formik';
 
@@ -15,6 +16,15 @@ const useStyles = makeStyles(theme => ({
     display: 'grid',
     gridTemplateColumns: 'repeat(8, 1fr)',
     gap: '25px',
+    [theme.breakpoints.down('xl')]: {
+      gridTemplateColumns: 'repeat(6, 1fr)',
+    },
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: 'repeat(4, 1fr)',
+    },
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: 'repeat(2, 1fr)',
+    },
   },
   champSlot: {
     cursor: 'pointer',
@@ -26,9 +36,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
   champImage: {
-    borderRadius: '50%',
-    width: '100px',
-    height: '100px',
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+    margin: theme.spacing(2),
   },
 }));
 
@@ -76,7 +86,7 @@ const Champion: React.FunctionComponent<{ champion: ChampionInterface }> = ({
   return (
     <Box key={name} my={2} className={classes.champSlot}>
       <Paper className={classes.champCenter}>
-        <img className={classes.champImage} src={imgSrc} alt={name} />
+        <Avatar className={classes.champImage} src={imgSrc} alt={name} />
         <Typography>{name}</Typography>
       </Paper>
     </Box>
