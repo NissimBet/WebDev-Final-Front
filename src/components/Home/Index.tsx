@@ -1,3 +1,4 @@
 import HomePageSearchForm from './Form';
+import HomePageChampionPool from './ChampionPool';
 
-export { HomePageSearchForm };
+export { HomePageSearchForm, HomePageChampionPool };

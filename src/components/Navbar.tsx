@@ -13,7 +13,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 
-import Login from './Login';
+import { LoginDialog } from './Login';
 interface SiteLink {
   name: string;
   link: string;
@@ -169,7 +169,7 @@ const Navbar = () => {
                 )}
               </Box>
               <Box display="flex">
-                <Login />
+                <LoginDialog />
 
                 <Button variant="text" color="inherit">
                   Logout

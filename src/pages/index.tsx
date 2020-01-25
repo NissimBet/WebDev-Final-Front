@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { HomePageSearchForm } from '../components/Home/Index';
+import { HomePageSearchForm, HomePageChampionPool } from '../components/Home';
 
 import { makeStyles, Box, Typography } from '@material-ui/core';
 
@@ -28,6 +28,9 @@ const Index = () => {
         {/* Champion Search */}
         <HomePageSearchForm />
         {/* Recent Builds */}
+        <div style={{ height: '30px' }}></div>
+
+        <HomePageChampionPool />
         {/* Recent Patch Notes */}
       </Box>
     </React.Fragment>
