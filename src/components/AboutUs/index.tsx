@@ -58,29 +58,27 @@ interface PersonDataInterface {
 
 const personData: PersonDataInterface[] = [
   {
-    name: 'Nissim Betesh',
+    name: 'MArk Zuckeberg',
+    description: 'Our Lord and Savior, Mark zuckerberg',
+    socialLinks: ['Gtihub', 'twitter', 'instagram'],
+  },
+  {
+    name: 'Carlos Tamez',
     description: 'CS student at Tecnologico de Monterrey',
     socialLinks: ['Gtihub', 'twitter', 'instagram'],
   },
   {
-    name: 'Nissim Betesh',
-    description: 'CS student at Tecnologico de Monterrey',
-    socialLinks: ['Gtihub', 'twitter', 'instagram'],
-  },
-  {
-    name: 'Nissim Betesh',
+    name: 'Alfredo Salazar',
     description: 'CS student at Tecnologico de Monterrey',
     socialLinks: ['Gtihub', 'twitter', 'instagram'],
   },
 ];
 interface PersonCardInterface extends PersonDataInterface {
-  key: number | string;
   handleArrowPress: () => void;
   expanded: boolean;
 }
 
 const Person: React.FunctionComponent<PersonCardInterface> = ({
-  key,
   description,
   name,
   socialLinks,
@@ -89,7 +87,7 @@ const Person: React.FunctionComponent<PersonCardInterface> = ({
 }) => {
   const classes = useStyles({});
   return (
-    <Card className={classes.card} key={key}>
+    <Card className={classes.card}>
       <CardContent>
         <Avatar
           className={classes.ourFaces}
@@ -132,7 +130,7 @@ export default () => {
         About us
       </Typography>
       {/* estudiantes del tec de mty */}
-      <Typography>
+      <Typography paragraph>
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi ea
         tenetur nulla ab sapiente perferendis hic, dolore dolores deleniti minus
         debitis quibusdam illo at excepturi delectus ad omnis, nobis similique.

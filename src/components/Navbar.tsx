@@ -34,6 +34,10 @@ const siteLinks: Array<SiteLink | ComposedSiteLink> = [
     link: '/AboutUs',
   },
   {
+    name: 'Contact Us',
+    link: '/ContactUs',
+  },
+  {
     name: 'games',
     site: [
       {
