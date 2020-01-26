@@ -31,11 +31,11 @@ const siteLinks: Array<SiteLink | ComposedSiteLink> = [
   },
   {
     name: 'About Us',
-    link: '/AboutUs',
+    link: '/about-us',
   },
   {
     name: 'Contact Us',
-    link: '/ContactUs',
+    link: '/contact-us',
   },
   {
     name: 'games',
@@ -46,7 +46,7 @@ const siteLinks: Array<SiteLink | ComposedSiteLink> = [
       },
       {
         name: 'League of Legends',
-        link: '/',
+        link: '/games/league',
       },
       {
         name: 'Overwatch',

@@ -103,8 +103,8 @@ export default () => {
               <Box my={3}>
                 <Typography>
                   Don't have an account,{' '}
-                  <NextLink href="/Register">
-                    <Link href="/Register">Register</Link>
+                  <NextLink href="/register">
+                    <Link href="/register">Register</Link>
                   </NextLink>
                 </Typography>
               </Box>

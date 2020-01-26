@@ -122,8 +122,8 @@ export default () => {
           <Box>
             <Typography>
               If you don't have an account,{' '}
-              <NextLink href="/Register">
-                <Link href="/Register" onClick={handleClickClose}>
+              <NextLink href="/register">
+                <Link href="/register" onClick={handleClickClose}>
                   register here
                 </Link>
               </NextLink>
