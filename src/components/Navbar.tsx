@@ -13,7 +13,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 
-import { LoginDialog } from './Login';
+import LoginDialog from './Login/LoginPopup';
 interface SiteLink {
   name: string;
   link: string;
