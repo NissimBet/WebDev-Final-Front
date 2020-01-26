@@ -11,8 +11,9 @@
     "develop": "next -p 8000",
     "dev:gql": "micro pages/api/graphql.js",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "eslint src",
+    "heroku-postbuild": "npm run build",
     "gql-codegen": "graphql-codegen --config codegen.yml"
   },
   "repository": {
