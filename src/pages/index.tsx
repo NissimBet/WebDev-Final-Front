@@ -1,6 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
-import { HomePageSearchForm, HomePageChampionPool } from '../components/Home';
+// import { HomePageSearchForm, HomePageChampionPool } from '../components/Home';
+import HomePageSearchForm from '../components/Home/Form';
+import HomePageChampionPool from '../components/Home/ChampionPool';
 
 import { makeStyles, Box, Typography } from '@material-ui/core';
 
