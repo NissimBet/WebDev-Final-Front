@@ -8,7 +8,8 @@ export default () => {
     <React.Fragment>
       <Head>
         <title>Login</title>
-      </Head>
+      </Head>{' '}
+      {/* comment to force git commit */}
       <LoginPage />
     </React.Fragment>
   );

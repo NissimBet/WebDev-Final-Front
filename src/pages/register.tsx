@@ -8,6 +8,7 @@ export default () => {
       <Head>
         <title>Register</title>
       </Head>
+      {/* comment to force git commit */}
       <Register />
     </React.Fragment>
   );
