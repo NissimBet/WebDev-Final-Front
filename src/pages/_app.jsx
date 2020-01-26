@@ -69,7 +69,7 @@ MyApp.getInitialProps = async initialProps => {
 
   const isLoggedIn = !!token;
 
-  checkUserAuth(ctx);
+  //checkUserAuth(ctx);
 
   return { pageProps, isLoggedIn };
 };
