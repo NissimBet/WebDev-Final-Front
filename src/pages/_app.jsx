@@ -8,7 +8,7 @@ import NextApp from 'next/app';
 
 import theme from './../utils/theme';
 import { ThemeProvider } from 'styled-components';
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 
 function checkUserAuth(ctx) {
   const { token } = nextCookie(ctx);
@@ -48,11 +48,11 @@ class MyApp extends NextApp {
     return (
       <ApolloProvider client={apolloClient}>
         <CssBaseline />
-        <ThemeProvider theme={theme}>
+        <MuiThemeProvider theme={theme}>
           <AppLayout isLoggedIn={isLoggedIn}>
             <Component apolloClient={apolloClient} />
           </AppLayout>
-        </ThemeProvider>
+        </MuiThemeProvider>
       </ApolloProvider>
     );
   }

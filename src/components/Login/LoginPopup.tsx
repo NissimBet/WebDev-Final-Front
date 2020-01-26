@@ -8,10 +8,13 @@ import {
   DialogContentText,
   DialogActions,
   TextField,
+  Box,
   makeStyles,
   Typography,
+  Link,
 } from '@material-ui/core';
 import { object, string } from 'yup';
+import NextLink from 'next/link';
 
 const useStyle = makeStyles({
   errorMessage: {
@@ -116,6 +119,16 @@ export default () => {
               </form>
             )}
           </Formik>
+          <Box>
+            <Typography>
+              If you don't have an account,{' '}
+              <NextLink href="/Register">
+                <Link href="/Register" onClick={handleClickClose}>
+                  register here
+                </Link>
+              </NextLink>
+            </Typography>
+          </Box>
         </DialogContent>
       </Dialog>
     </div>

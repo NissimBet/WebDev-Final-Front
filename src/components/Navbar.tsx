@@ -74,6 +74,9 @@ const useStyle = makeStyles(theme => ({
     width: theme.spacing(3),
     height: theme.spacing(3),
   },
+  mainBg: {
+    backgroundColor: theme.palette.primary.main,
+  },
 }));
 
 const NavLink: React.FunctionComponent<SiteLink> = ({ link, name }) => (
@@ -138,7 +141,7 @@ const Navbar = () => {
   return (
     <React.Fragment>
       <AppBar position="fixed" style={{ height: 'auto' }}>
-        <Toolbar>
+        <Toolbar className={classes.mainBg}>
           <Box className={classes.root}>
             <Box flex="1 0 auto" display="flex" alignItems="center">
               <Typography>Dev Project</Typography>
