@@ -5,8 +5,9 @@ import {
   TextField,
   Button,
   makeStyles,
+  Link,
 } from '@material-ui/core';
-
+import NextLink from 'next/link';
 import { Formik } from 'formik';
 import { string, object } from 'yup';
 
@@ -47,7 +48,7 @@ export default () => {
               justifyContent="center"
             >
               <Box
-                my={3}
+                my={2}
                 width={[1, 0.75, 0.5]}
                 display="flex"
                 alignItems="center"
@@ -55,7 +56,6 @@ export default () => {
               >
                 <TextField
                   fullWidth
-                  autoFocus
                   margin="dense"
                   id="login-email-input"
                   label="Email Address"
@@ -72,7 +72,7 @@ export default () => {
                 )}
               </Box>
               <Box
-                my={3}
+                my={2}
                 width={[1, 0.75, 0.5]}
                 display="flex"
                 alignItems="center"
@@ -80,7 +80,6 @@ export default () => {
               >
                 <TextField
                   fullWidth
-                  autoFocus
                   margin="dense"
                   id="login-password-input"
                   label="Your Password"
@@ -101,6 +100,14 @@ export default () => {
               <Button type="submit" variant="contained">
                 Login
               </Button>
+              <Box my={3}>
+                <Typography>
+                  Don't have an account,{' '}
+                  <NextLink href="/Register">
+                    <Link href="/Register">Register</Link>
+                  </NextLink>
+                </Typography>
+              </Box>
             </Box>
           </form>
         )}

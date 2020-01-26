@@ -50,7 +50,7 @@ export default () => {
               justifyContent="center"
             >
               <Box
-                my={3}
+                my={2}
                 width={[1, 0.75, 0.5]}
                 display="flex"
                 alignItems="center"
@@ -58,7 +58,6 @@ export default () => {
               >
                 <TextField
                   fullWidth
-                  autoFocus
                   margin="dense"
                   id="login-email-input"
                   label="Email Address"
@@ -75,7 +74,7 @@ export default () => {
                 )}
               </Box>
               <Box
-                my={3}
+                my={2}
                 width={[1, 0.75, 0.5]}
                 display="flex"
                 alignItems="center"
@@ -83,7 +82,6 @@ export default () => {
               >
                 <TextField
                   fullWidth
-                  autoFocus
                   margin="dense"
                   id="login-password-input"
                   label="Your Password"
@@ -102,7 +100,7 @@ export default () => {
                 )}
               </Box>
               <Box
-                my={3}
+                my={2}
                 width={[1, 0.75, 0.5]}
                 display="flex"
                 alignItems="center"
@@ -110,7 +108,6 @@ export default () => {
               >
                 <TextField
                   fullWidth
-                  autoFocus
                   margin="dense"
                   id="login-matchPassword-input"
                   label="Confirm Password"
@@ -131,7 +128,7 @@ export default () => {
                   )}
               </Box>
               <Button type="submit" variant="contained">
-                Login
+                Register
               </Button>
             </Box>
           </form>
