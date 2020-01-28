@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Paper,
@@ -42,52 +42,36 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface ChampionInterface {
+interface LolChampion {
+  id: string;
+  key: string;
   name: string;
-  image: string;
-  link: string;
-  game: String;
 }
 
-const champs: Array<ChampionInterface> = [
-  { name: 'Aatrox', image: 'noImage', link: '#', game: 'League of Legends' },
-  { name: 'Aatrox', image: 'noImage', link: '#', game: 'League of Legends' },
-  { name: 'Aatrox', image: 'noImage', link: '#', game: 'League of Legends' },
-  { name: 'Aatrox', image: 'noImage', link: '#', game: 'League of Legends' },
-  { name: 'Aatrox', image: 'noImage', link: '#', game: 'League of Legends' },
-  { name: 'Aatrox', image: 'noImage', link: '#', game: 'League of Legends' },
-  { name: 'Aatrox', image: 'noImage', link: '#', game: 'League of Legends' },
-  { name: 'Aatrox', image: 'noImage', link: '#', game: 'League of Legends' },
-  { name: 'Aatrox', image: 'noImage', link: '#', game: 'League of Legends' },
-  { name: 'Aatrox', image: 'noImage', link: '#', game: 'League of Legends' },
-  { name: 'Aatrox', image: 'noImage', link: '#', game: 'League of Legends' },
-  { name: 'Invoker', image: 'noImage', link: '#', game: 'Dota 2' },
-  { name: 'Invoker', image: 'noImage', link: '#', game: 'Dota 2' },
-  { name: 'Invoker', image: 'noImage', link: '#', game: 'Dota 2' },
-  { name: 'Invoker', image: 'noImage', link: '#', game: 'Dota 2' },
-  { name: 'Invoker', image: 'noImage', link: '#', game: 'Dota 2' },
-  { name: 'Invoker', image: 'noImage', link: '#', game: 'Dota 2' },
-  { name: 'Invoker', image: 'noImage', link: '#', game: 'Dota 2' },
-  { name: 'Invoker', image: 'noImage', link: '#', game: 'Dota 2' },
-  { name: 'Invoker', image: 'noImage', link: '#', game: 'Dota 2' },
-  { name: 'Invoker', image: 'noImage', link: '#', game: 'Dota 2' },
-  { name: 'Winston', image: 'noImage', link: '#', game: 'Overwatch' },
-  { name: 'Winston', image: 'noImage', link: '#', game: 'Overwatch' },
-  { name: 'Winston', image: 'noImage', link: '#', game: 'Overwatch' },
-  { name: 'Winston', image: 'noImage', link: '#', game: 'Overwatch' },
-  { name: 'Winston', image: 'noImage', link: '#', game: 'Overwatch' },
-  { name: 'Winston', image: 'noImage', link: '#', game: 'Overwatch' },
-];
+interface DotaChampion {
+  id: number;
+  name: string;
+}
 
-const Champion: React.FunctionComponent<{ champion: ChampionInterface }> = ({
-  champion: { name, link: imgSrc },
-}) => {
+interface OWChampion {
+  id: number;
+  name: string;
+}
+
+const Champion: React.FunctionComponent<{
+  championData: LolChampion | DotaChampion | OWChampion;
+  game: number;
+}> = ({ championData, game }) => {
   const classes = useStyles({});
   return (
-    <Box key={name} my={2} className={classes.champSlot}>
+    <Box my={2} className={classes.champSlot}>
       <Paper className={classes.champCenter}>
-        <Avatar className={classes.champImage} src={imgSrc} alt={name} />
-        <Typography>{name}</Typography>
+        <Avatar
+          className={classes.champImage}
+          src={championData.name}
+          alt={name}
+        />
+        <Typography>{championData.name}</Typography>
       </Paper>
     </Box>
   );
@@ -97,6 +81,30 @@ export default () => {
   const classes = useStyles({});
   const games = ['League of Legends', 'Dota 2', 'Overwatch'];
   const [currentGame, setCurrentGame] = useState(0);
+
+  const [champs, setChamps] = useState([]);
+  useEffect(() => {
+    let url = '';
+    switch (currentGame) {
+      case 0:
+        url = `${process.env.BACKEND_URL}/champs/lol/all`;
+        break;
+      case 1:
+        url = `${process.env.BACKEND_URL}/champs/dota/all`;
+        break;
+      case 2:
+        url = `${process.env.BACKEND_URL}/champs/ow/all`;
+        break;
+      default:
+        url = `${process.env.BACKEND_URL}/champs/lol/all`;
+        break;
+    }
+    fetch(url)
+      .then(d => d.json())
+      .then(champs => {
+        setChamps(champs);
+      });
+  }, [currentGame]);
 
   return (
     <Box>
@@ -127,13 +135,9 @@ export default () => {
         )}
       </Formik>
       <Box className={classes.rootGrid}>
-        {champs
-          .filter(
-            ({ game }) => games.findIndex(val => val === game) === currentGame
-          )
-          .map(champ => (
-            <Champion champion={champ} />
-          ))}
+        {champs.map(champ => (
+          <Champion key={champ.name} championData={champ} game={currentGame} />
+        ))}
       </Box>
     </Box>
   );
