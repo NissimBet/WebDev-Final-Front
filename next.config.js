@@ -6,7 +6,7 @@ const optimizedImages = require('next-optimized-images');
 let nextConfig = {
   target: 'serverless',
   env: {
-    BACKEND_URL: 'http://localhost:3001',
+    BACKEND_URL: 'http://localhost:3001/',
     ENV_NAME: process.env.NODE_ENV,
     //BACKEND_URL: process.env.BACKEND_URL,
   },

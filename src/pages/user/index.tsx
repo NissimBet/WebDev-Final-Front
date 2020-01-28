@@ -35,15 +35,12 @@ UserProfile.getInitialProps = async ctx => {
 
   try {
     //const response = await fetch(`${process.env.BACKEND_URL}/users/validate`, {
-    const response = await fetch(
-      `${process.env.BACKEND_URL}/users/no-email-validate`,
-      {
-        credentials: 'include',
-        headers: {
-          Authorization: 'Bearer ' + token,
-        },
-      }
-    );
+    const response = await fetch(`${process.env.BACKEND_URL}users/validate`, {
+      credentials: 'include',
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
 
     if (response.ok || response.status === 200) {
       //return { data: { username: 'test', email: 'test' } };

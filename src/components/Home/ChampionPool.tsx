@@ -87,16 +87,16 @@ export default () => {
     let url = '';
     switch (currentGame) {
       case 0:
-        url = `${process.env.BACKEND_URL}/champs/lol/all`;
+        url = `${process.env.BACKEND_URL}champs/lol/all`;
         break;
       case 1:
-        url = `${process.env.BACKEND_URL}/champs/dota/all`;
+        url = `${process.env.BACKEND_URL}champs/dota/all`;
         break;
       case 2:
-        url = `${process.env.BACKEND_URL}/champs/ow/all`;
+        url = `${process.env.BACKEND_URL}champs/ow/all`;
         break;
       default:
-        url = `${process.env.BACKEND_URL}/champs/lol/all`;
+        url = `${process.env.BACKEND_URL}champs/lol/all`;
         break;
     }
     fetch(url)

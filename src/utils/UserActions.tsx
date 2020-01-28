@@ -14,7 +14,7 @@ interface RegisterParams {
 }
 
 export const loginUser = async (email: string, password: string) => {
-  const userJWT = await fetch(`${process.env.BACKEND_URL}/users/login`, {
+  const userJWT = await fetch(`${process.env.BACKEND_URL}users/login`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -40,7 +40,7 @@ export const registerUser = async ({
   username,
   password,
 }: RegisterParams) => {
-  const user = await fetch(`${process.env.BACKEND_URL}/users/register`, {
+  const user = await fetch(`${process.env.BACKEND_URL}users/register`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
