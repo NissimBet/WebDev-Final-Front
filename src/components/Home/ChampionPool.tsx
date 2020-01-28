@@ -51,11 +51,13 @@ interface LolChampion {
 interface DotaChampion {
   id: number;
   name: string;
+  imageName: string;
 }
 
 interface OWChampion {
-  id: number;
+  id: string;
   name: string;
+  portrait: string;
 }
 
 const Champion: React.FunctionComponent<{
@@ -68,7 +70,19 @@ const Champion: React.FunctionComponent<{
       <Paper className={classes.champCenter}>
         <Avatar
           className={classes.champImage}
-          src={championData.name}
+          src={
+            game === 0
+              ? `http://ddragon.leagueoflegends.com/cdn/10.2.1/img/champion/${
+                  (championData as LolChampion).id
+                }.png`
+              : game === 1
+              ? `http://cdn.dota2.com/apps/dota2/images/heroes/${
+                  (championData as DotaChampion).imageName
+                }_sb.png`
+              : game === 2
+              ? (championData as OWChampion).portrait
+              : ''
+          }
           alt={name}
         />
         <Typography>{championData.name}</Typography>
