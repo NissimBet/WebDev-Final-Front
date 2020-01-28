@@ -1,21 +1,20 @@
 import cookies from 'next-cookies';
 import React from 'react';
-import { ApolloProvider } from 'react-apollo';
+
 import nextCookie from 'next-cookies';
 import AppLayout from '../components/AppLayout';
-import withApolloClient from '../../lib/with-apollo-client';
+
 import NextApp from 'next/app';
 
 import theme from './../utils/theme';
-import { ThemeProvider } from 'styled-components';
 import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 
 function checkUserAuth(ctx) {
   const { token } = nextCookie(ctx);
 
-  if (process.env.NODE_ENV === 'development') {
+  /* if (process.env.NODE_ENV === 'development') {
     return;
-  }
+  } */
 
   /*
    * If `ctx.req` is available it means we are on the server.
@@ -46,14 +45,14 @@ class MyApp extends NextApp {
   render() {
     const { Component, apolloClient, isLoggedIn } = this.props;
     return (
-      <ApolloProvider client={apolloClient}>
+      <React.Fragment>
         <CssBaseline />
         <MuiThemeProvider theme={theme}>
           <AppLayout isLoggedIn={isLoggedIn}>
             <Component apolloClient={apolloClient} />
           </AppLayout>
         </MuiThemeProvider>
-      </ApolloProvider>
+      </React.Fragment>
     );
   }
 }
@@ -74,4 +73,4 @@ MyApp.getInitialProps = async initialProps => {
   return { pageProps, isLoggedIn };
 };
 
-export default withApolloClient(MyApp);
+export default MyApp;

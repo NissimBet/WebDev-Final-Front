@@ -9,12 +9,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "develop": "next -p 8000",
-    "dev:gql": "micro pages/api/graphql.js",
     "build": "next build",
     "start": "next start -p $PORT",
     "lint": "eslint src",
-    "heroku-postbuild": "npm run build",
-    "gql-codegen": "graphql-codegen --config codegen.yml"
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -39,13 +37,10 @@
     "@types/styled-components": "^4.4.1",
     "@types/yup": "^0.26.27",
     "@zeit/next-css": "^1.0.1",
-    "apollo-boost": "^0.4.7",
-    "apollo-link-context": "^1.0.19",
     "clsx": "^1.0.4",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "formik": "^2.0.10",
-    "graphql": "^14.5.8",
     "imagemin-mozjpeg": "^8.0.0",
     "imagemin-optipng": "^7.1.0",
     "imagemin-svgo": "^7.0.0",
@@ -55,23 +50,16 @@
     "next-compose-plugins": "^2.2.0",
     "next-cookies": "^2.0.3",
     "next-optimized-images": "^2.5.4",
-    "next-plugin-graphql": "0.0.2",
     "react": "^16.12.0",
-    "react-apollo": "^3.1.3",
     "react-content-loader": "^4.3.4",
     "react-dom": "^16.12.0",
-    "react-use": "^13.13.0",
+    "react-use": "^13.22.2",
     "rebass": "^4.0.7",
     "styled-components": "^4.4.1",
     "yup": "^0.28.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.9.1",
-    "@graphql-codegen/introspection": "^1.9.1",
-    "@graphql-codegen/typescript": "^1.9.1",
-    "@graphql-codegen/typescript-document-nodes": "^1.9.1",
-    "@graphql-codegen/typescript-operations": "^1.9.1",
-    "@graphql-codegen/typescript-react-apollo": "^1.9.1",
+    "@types/node": "^13.5.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "babel-plugin-styled-components": "^1.10.6",
@@ -82,10 +70,10 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
+    "husky": "^3.1.0",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
-    "typescript": "^3.7.4",
-    "husky": "^3.1.0"
+    "typescript": "^3.7.4"
   },
   "husky": {
     "hooks": {

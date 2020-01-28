@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import { object, string } from 'yup';
 import NextLink from 'next/link';
+import { loginUser } from '../../utils/UserActions';
 
 const useStyle = makeStyles({
   errorMessage: {
@@ -53,9 +54,13 @@ export default () => {
         <DialogContent>
           <Formik
             initialValues={{ email: '', password: '' }}
-            onSubmit={(values, actions) => {
-              console.log(values);
+            onSubmit={async (values, actions) => {
+              actions.setSubmitting(true);
+
+              await loginUser(values.email, values.password);
+
               handleClickClose();
+              actions.setSubmitting(false);
             }}
             validationSchema={validator}
           >
@@ -112,7 +117,11 @@ export default () => {
                   <Button onClick={handleClickClose} color="primary">
                     Cancel
                   </Button>
-                  <Button type="submit" color="primary">
+                  <Button
+                    type="submit"
+                    disabled={formikBag.isSubmitting}
+                    color="primary"
+                  >
                     Login
                   </Button>
                 </DialogActions>

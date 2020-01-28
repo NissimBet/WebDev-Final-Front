@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 
 import LoginDialog from './Login/LoginPopup';
+import { logout } from '../utils/Authentication';
 interface SiteLink {
   name: string;
   link: string;
@@ -178,7 +179,7 @@ const Navbar = () => {
               <Box display="flex">
                 <LoginDialog />
 
-                <Button variant="text" color="inherit">
+                <Button variant="text" color="inherit" onClick={() => logout()}>
                   Logout
                 </Button>
               </Box>

@@ -10,6 +10,7 @@ import {
 import NextLink from 'next/link';
 import { Formik } from 'formik';
 import { string, object } from 'yup';
+import { loginUser } from '../../utils/UserActions';
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -36,7 +37,14 @@ export default () => {
       </Typography>
       <Formik
         initialValues={{ email: '', password: '' }}
-        onSubmit={values => console.log(values)}
+        onSubmit={async (values, actions) => {
+          console.log(values);
+          actions.setSubmitting(true);
+
+          await loginUser(values.email, values.password);
+
+          actions.setSubmitting(false);
+        }}
         validationSchema={validation}
       >
         {formikBag => (
@@ -97,7 +105,11 @@ export default () => {
                   </Typography>
                 )}
               </Box>
-              <Button type="submit" variant="contained">
+              <Button
+                disabled={formikBag.isSubmitting}
+                type="submit"
+                variant="contained"
+              >
                 Login
               </Button>
               <Box my={3}>

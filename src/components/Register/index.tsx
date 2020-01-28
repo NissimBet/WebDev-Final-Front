@@ -9,6 +9,7 @@ import {
 
 import { Formik } from 'formik';
 import { string, object, ref } from 'yup';
+import { registerUser } from '../../utils/UserActions';
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -23,6 +24,7 @@ const validation = object().shape({
   email: string()
     .email('Please input a valid email address')
     .required('Please input your email address'),
+  username: string().required('Please input your username'),
   password: string().required('Please input your password'),
   matchPassword: string()
     .oneOf([ref('password'), null], 'Passwords must match')
@@ -37,8 +39,19 @@ export default () => {
         Register <b>now</b> to save your loadouts and favorite champs!
       </Typography>
       <Formik
-        initialValues={{ email: '', password: '', matchPassword: '' }}
-        onSubmit={values => console.log(values)}
+        initialValues={{
+          email: '',
+          password: '',
+          matchPassword: '',
+          username: '',
+        }}
+        onSubmit={async (values, actions) => {
+          actions.setSubmitting(true);
+
+          await registerUser({ ...values });
+
+          actions.setSubmitting(false);
+        }}
         validationSchema={validation}
       >
         {formikBag => (
@@ -70,6 +83,32 @@ export default () => {
                 {formikBag.errors.email && formikBag.touched.email && (
                   <Typography color="error">
                     {formikBag.errors.email}
+                  </Typography>
+                )}
+              </Box>
+              <Box
+                my={2}
+                width={[1, 0.75, 0.5]}
+                display="flex"
+                alignItems="center"
+                flexDirection="column"
+              >
+                <TextField
+                  fullWidth
+                  margin="dense"
+                  id="login-username-input"
+                  label="Username"
+                  type="text"
+                  name="username"
+                  error={
+                    formikBag.errors.username && formikBag.touched.username
+                  }
+                  onChange={formikBag.handleChange}
+                  onBlur={formikBag.handleBlur}
+                />
+                {formikBag.errors.username && formikBag.touched.username && (
+                  <Typography color="error">
+                    {formikBag.errors.username}
                   </Typography>
                 )}
               </Box>
@@ -127,7 +166,11 @@ export default () => {
                     </Typography>
                   )}
               </Box>
-              <Button type="submit" variant="contained">
+              <Button
+                type="submit"
+                disabled={formikBag.isSubmitting}
+                variant="contained"
+              >
                 Register
               </Button>
             </Box>

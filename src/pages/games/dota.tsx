@@ -1,14 +1,15 @@
 import React from 'react';
+import { Box, Typography } from '@material-ui/core';
 import Head from 'next/head';
-import Register from '../components/Register';
+import Dota from '../../components/Games/Dota';
 
 export default () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Register</title>
+        <title>Dota 2</title>
       </Head>
-      <Register />
+      <Dota />
     </React.Fragment>
   );
 };

@@ -6,5 +6,10 @@
       "use": "@now/next"
     }
   ],
+  "build": {
+    "env": {
+      "BACKEND_URL": "https://webdevapi.herokuapp.com/"
+    }
+  },
   "name": "gamemonitor-front"
 }
