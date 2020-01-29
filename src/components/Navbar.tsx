@@ -15,6 +15,7 @@ import {
 
 import LoginDialog from './Login/LoginPopup';
 import { logout } from '../utils/Authentication';
+import { useLoginContext } from '../utils/UserContext';
 interface SiteLink {
   name: string;
   link: string;
@@ -137,7 +138,7 @@ const NavMenu: React.FunctionComponent<{ name: string; site: SiteLink[] }> = ({
   );
 };
 
-const Navbar = () => {
+const Navbar = ({ isLoggedIn }: { isLoggedIn: Boolean }) => {
   const classes = useStyle({});
   return (
     <React.Fragment>
@@ -177,11 +178,20 @@ const Navbar = () => {
                 )}
               </Box>
               <Box display="flex">
-                <LoginDialog />
+                {!isLoggedIn && <LoginDialog />}
+                {isLoggedIn && <NavLink link="/user" name="Profile" />}
 
-                <Button variant="text" color="inherit" onClick={() => logout()}>
-                  Logout
-                </Button>
+                {isLoggedIn && (
+                  <Button
+                    variant="text"
+                    color="inherit"
+                    onClick={() => {
+                      logout();
+                    }}
+                  >
+                    Logout
+                  </Button>
+                )}
               </Box>
             </Box>
           </Box>

@@ -1,16 +1,16 @@
-import { SkipNavContent, SkipNavLink } from '@reach/skip-nav';
+import { SkipNavContent } from '@reach/skip-nav';
 import '@reach/skip-nav/styles.css';
 import Head from 'next/head';
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 
-import { useRouter } from 'next/router';
-import { Box, Paper, makeStyles } from '@material-ui/core';
+import { Paper, makeStyles } from '@material-ui/core';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
 //import { UserSession } from '../types/temporal';
 // import { getCurrentUser } from '../hooks';
+import LoginContext, { useLoginContext } from '../utils/UserContext';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -44,12 +44,11 @@ interface AppLayoutProps {
   isLoggedIn: boolean;
 }
 
-const AppLayout: React.FunctionComponent<AppLayoutProps> = ({ children }) => {
-  //const router = useRouter();
-
-  //const isLoginPage = router?.route.includes('/login') ?? true;
-  const isLoginPage = false;
-
+const AppLayout: React.FunctionComponent<AppLayoutProps> = ({
+  children,
+  isLoggedIn,
+}) => {
+  console.log(isLoggedIn);
   return (
     <React.Fragment>
       <Head>
@@ -63,10 +62,8 @@ const AppLayout: React.FunctionComponent<AppLayoutProps> = ({ children }) => {
 
       <GlobalStyle />
 
-      <Navbar />
-
+      <Navbar isLoggedIn={isLoggedIn} />
       <CommonLayout children={children} />
-
       <Footer />
     </React.Fragment>
   );
@@ -77,6 +74,7 @@ const useStyle = makeStyles(theme => ({
     maxWidth: '1200px',
     margin: '0 auto',
     padding: theme.spacing(3),
+    minHeight: '80vh',
   },
 }));
 
@@ -92,16 +90,5 @@ const CommonLayout: React.FunctionComponent<any> = ({ children }) => {
     </>
   );
 };
-/* 
-const LoginLayout: React.FunctionComponent<any> = ({ children }) => {
-  return (
-    <>
-      <Box mx="auto">
-        <SkipNavContent />
-        {children}
-      </Box>
-    </>
-  );
-};
- */
+
 export default AppLayout;

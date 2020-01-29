@@ -1,7 +1,6 @@
 import cookies from 'next-cookies';
 import React from 'react';
 
-import nextCookie from 'next-cookies';
 import AppLayout from '../components/AppLayout';
 
 import NextApp from 'next/app';
@@ -9,31 +8,6 @@ import NextApp from 'next/app';
 import theme from './../utils/theme';
 import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 
-function checkUserAuth(ctx) {
-  const { token } = nextCookie(ctx);
-
-  /* if (process.env.NODE_ENV === 'development') {
-    return;
-  } */
-
-  /*
-   * If `ctx.req` is available it means we are on the server.
-   * Additionally if there's no token it means the user is not logged in.
-   */
-  if (ctx.req) {
-    if (!token && ctx.pathname !== '/login') {
-      ctx.res.writeHead(302, { Location: '/login' });
-      ctx.res.end();
-      return;
-    }
-
-    if (token && ctx.pathname === '/login') {
-      ctx.res.writeHead(302, { Location: '/' });
-      ctx.res.end();
-      return;
-    }
-  }
-}
 class MyApp extends NextApp {
   componentDidMount() {
     const jssStyles = document.querySelector('#jss-server-side');
@@ -60,15 +34,13 @@ class MyApp extends NextApp {
 MyApp.getInitialProps = async initialProps => {
   const { Component, ctx } = initialProps;
   let pageProps = {};
+  const { token } = cookies(ctx);
+  console.log(cookies(ctx));
+  const isLoggedIn = !!token;
 
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx);
   }
-  const { token } = cookies(ctx);
-
-  const isLoggedIn = !!token;
-
-  //checkUserAuth(ctx);
 
   return { pageProps, isLoggedIn };
 };

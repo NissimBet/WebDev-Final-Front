@@ -75,11 +75,11 @@ export default () => {
               Home
             </FooterLink>
 
-            <FooterLink className={classes.linkText} link="/AboutUs">
+            <FooterLink className={classes.linkText} link="/about-us">
               Contact Us
             </FooterLink>
 
-            <FooterLink className={classes.linkText} link="/ContactUs">
+            <FooterLink className={classes.linkText} link="/contact-us">
               About Us
             </FooterLink>
 
@@ -87,12 +87,8 @@ export default () => {
               Login
             </FooterLink>
 
-            <FooterLink className={classes.linkText} link="#">
-              Dota 2
-            </FooterLink>
-
-            <FooterLink className={classes.linkText} link="#">
-              Overwatch
+            <FooterLink className={classes.linkText} link="/register">
+              Register
             </FooterLink>
           </Box>
         </Grid>

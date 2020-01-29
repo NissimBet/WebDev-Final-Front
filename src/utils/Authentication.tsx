@@ -1,6 +1,7 @@
 import nextCookie from 'next-cookies';
 import cookie from 'js-cookie';
 import Router from 'next/router';
+import fetch from 'isomorphic-unfetch';
 import { NextPageContext, NextPage } from 'next';
 import { useEffect } from 'react';
 
@@ -9,15 +10,18 @@ export const auth = (ctx: NextPageContext) => {
 
   // If there's no token, it means the user is not logged in.
   if (!token) {
-    if (typeof window === 'undefined') {
-      ctx.res.writeHead(302, { Location: '/login' });
-      ctx.res.end();
-    } else {
-      Router.push('/login');
-    }
+    redirect(ctx);
   }
 
   return token;
+};
+const redirect = (ctx: NextPageContext) => {
+  if (typeof window === 'undefined') {
+    ctx.res.writeHead(302, { Location: '/login' });
+    ctx.res.end();
+  } else {
+    Router.push('/login');
+  }
 };
 
 export const logout = () => {
@@ -50,6 +54,20 @@ export const withAuthSync = (WrappedComponent: NextPage) => {
 
   Wrapper.getInitialProps = async ctx => {
     const token = auth(ctx);
+
+    if (token) {
+      const response = await fetch(`${process.env.BACKEND_URL}users/validate`, {
+        credentials: 'include',
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      });
+
+      if (response.status !== 200) {
+        cookie.remove('token');
+        redirect(ctx);
+      }
+    }
 
     const componentProps =
       WrappedComponent.getInitialProps &&

@@ -16,6 +16,7 @@ import {
 import { object, string } from 'yup';
 import NextLink from 'next/link';
 import { loginUser } from '../../utils/UserActions';
+import { useLoginContext } from '../../utils/UserContext';
 
 const useStyle = makeStyles({
   errorMessage: {
@@ -32,6 +33,7 @@ const validator = object().shape({
 
 export default () => {
   const [isDialogOpen, setOpenDialog] = useState(false);
+
   const classes = useStyle({});
   const handleClickOpen = () => {
     setOpenDialog(true);

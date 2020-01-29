@@ -23,9 +23,8 @@ export const loginUser = async (email: string, password: string) => {
     body: JSON.stringify({ email, password }),
   });
   const jwt = await userJWT.json();
-  console.log('login', jwt);
 
-  if (userJWT.ok) {
+  if (userJWT) {
     cookie.set('token', jwt);
     Router.push('/');
     return jwt;
@@ -49,7 +48,7 @@ export const registerUser = async ({
     body: JSON.stringify({ email, password, username }),
   });
   const userJSON = await user.json();
-  console.log('register', userJSON);
+
   Router.push('/login');
   return userJSON;
 };

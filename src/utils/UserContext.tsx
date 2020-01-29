@@ -42,7 +42,7 @@ interface LoginState {
 }
 
 interface LoginContextProps {
-  children: React.ReactChildren;
+  children: React.ReactNode;
 }
 
 interface LoginAction {

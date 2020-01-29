@@ -11,6 +11,7 @@ import NextLink from 'next/link';
 import { Formik } from 'formik';
 import { string, object } from 'yup';
 import { loginUser } from '../../utils/UserActions';
+import { useLoginContext } from '../../utils/UserContext';
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -30,6 +31,7 @@ const validation = object().shape({
 
 export default () => {
   const classes = useStyles({});
+
   return (
     <React.Fragment>
       <Typography align="center" className={classes.title}>
