@@ -72,7 +72,6 @@ export const withAuthSync = (WrappedComponent: NextPage) => {
     const componentProps =
       WrappedComponent.getInitialProps &&
       (await WrappedComponent.getInitialProps(ctx));
-
     return { ...componentProps, token };
   };
 

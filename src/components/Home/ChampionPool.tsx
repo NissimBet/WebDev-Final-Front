@@ -72,7 +72,7 @@ const Champion: React.FunctionComponent<{
           className={classes.champImage}
           src={
             game === 0
-              ? `http://ddragon.leagueoflegends.com/cdn/10.2.1/img/champion/${
+              ? `https://ddragon.leagueoflegends.com/cdn/10.2.1/img/champion/${
                   (championData as LolChampion).id
                 }.png`
               : game === 1
