@@ -104,11 +104,11 @@ export default () => {
               Home
             </FooterLink>
 
-            <FooterLink className={classes.linkText} link="/about-us">
+            <FooterLink className={classes.linkText} link="/contact-us">
               Contact Us
             </FooterLink>
 
-            <FooterLink className={classes.linkText} link="/contact-us">
+            <FooterLink className={classes.linkText} link="/about-us">
               About Us
             </FooterLink>
 
