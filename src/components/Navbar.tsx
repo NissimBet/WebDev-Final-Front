@@ -43,17 +43,17 @@ const siteLinks: Array<SiteLink | ComposedSiteLink> = [
     name: 'games',
     site: [
       {
+        name: 'League of Legends',
+        link: '/games/league',
+      },
+      /* {
         name: 'Dota 2',
         link: '/',
       },
       {
-        name: 'League of Legends',
-        link: '/games/league',
-      },
-      {
         name: 'Overwatch',
         link: '/',
-      },
+      }, */
     ],
   },
 ];

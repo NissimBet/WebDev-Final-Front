@@ -121,24 +121,26 @@ export default () => {
   return (
     <Box>
       <Typography variant="h5">League of Legends builds</Typography>
-      {!isQueryLoading ? (
-        allBuilds.length > 0 ? (
-          allBuilds.map((build: LeagueBuildData) => (
-            <Box
-              key={build.creator.username + build.createdAt}
-              width={[1 / 2, 1 / 3]}
-            >
-              <LeagueBuild buildData={build} key={build._id} />
-            </Box>
-          ))
+      <Box display="flex" flexWrap="wrap">
+        {!isQueryLoading ? (
+          allBuilds.length > 0 ? (
+            allBuilds.map((build: LeagueBuildData) => (
+              <Box
+                key={build.creator.username + build.createdAt}
+                width={[1, 1 / 2, 1 / 3]}
+              >
+                <LeagueBuild buildData={build} key={build._id} />
+              </Box>
+            ))
+          ) : (
+            <Typography>
+              There are no public builds for League of Legends at the time
+            </Typography>
+          )
         ) : (
-          <Typography>
-            There are no public builds for League of Legends at the time
-          </Typography>
-        )
-      ) : (
-        <Typography>Loading...</Typography>
-      )}
+          <Typography>Loading...</Typography>
+        )}
+      </Box>
     </Box>
   );
 };

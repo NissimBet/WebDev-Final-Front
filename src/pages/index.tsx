@@ -27,7 +27,7 @@ const Index = () => {
           Welcome
         </Typography>
         {/* Champion Search */}
-        <HomePageSearchForm />
+        {/* <HomePageSearchForm /> */}
         {/* Recent Builds */}
         <div style={{ height: '30px' }}></div>
 

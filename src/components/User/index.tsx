@@ -69,6 +69,10 @@ const useStyles = makeStyles(theme => ({
       objectFit: 'contain',
     },
   },
+  champSelect: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
 }));
 
 interface FavoriteChampListProps {
@@ -154,7 +158,7 @@ const FavoriteChampList: React.FunctionComponent<FavoriteChampListProps> = ({
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <Box display="flex" flexDirection="row" flexWrap="wrap">
           {missingChamps.map(({ name, id }) => (
-            <Box key={name} width={[1 / 2, 1 / 3]}>
+            <Box key={name} width={[1 / 2, 1 / 3]} marginY="4px" paddingX={1}>
               <Typography
                 variant="subtitle1"
                 onClick={async () => {
@@ -244,25 +248,34 @@ const LeagueBuild: React.FunctionComponent<{
         justifyContent="center"
       >
         {items.map((item, index) => (
-          <Box key={`${item._id} - ${index}`} width={[1, 1 / 3, 1 / 3]}>
+          <Box key={`${item._id} - ${index}`} width={[1, 1, 1 / 3]} marginX={2}>
             <LeagueItem {...item} />
           </Box>
         ))}
       </Box>
-      <Box display="flex" marginY={3} marginRight={2} alignItems="center">
+      <Divider light />
+      <Box
+        display="flex"
+        marginY={3}
+        alignItems="center"
+        flexDirection="column"
+      >
         <img
           src={`https://ddragon.leagueoflegends.com/cdn/10.2.1/img/champion/${champion.id}.png`}
-          width="50px"
-          height="50px"
+          width="65px"
+          height="65px"
+          alt={champion.name}
         />
-        <Typography>{champion.name}</Typography>
+        <Typography variant="h6">{champion.name}</Typography>
       </Box>
       <Divider light />
-      <Typography variant="caption">
-        {status
-          ? 'This build is currently private and is not currently shared with other people'
-          : 'This build is currently public and anyone can see it'}
-      </Typography>
+      <Box marginY={1}>
+        <Typography variant="caption">
+          {status
+            ? 'This build is currently private and is not currently shared with other people'
+            : 'This build is currently public and anyone can see it'}
+        </Typography>
+      </Box>
       <Button
         disabled={queryLoading}
         onClick={async () => {
@@ -312,8 +325,9 @@ const CreateLeagueBuild: React.FunctionComponent<CreateLeagueInterface> = ({
   itemSelection,
   championSelection,
 }) => {
+  const classes = useStyles({});
   const [isPrivate, setPrivacy] = useState(false);
-  const [currentChamp, setCurrentChamp] = useState('');
+  const [currentChamp, setCurrentChamp] = useState('Select');
   const [selectedItems, setSelectedItems] = useState([
     undefined,
     undefined,
@@ -375,6 +389,7 @@ const CreateLeagueBuild: React.FunctionComponent<CreateLeagueInterface> = ({
                         width={50}
                         height={50}
                         src={`http://ddragon.leagueoflegends.com/cdn/10.2.1/img/item/${item.image}`}
+                        alt={item.name}
                       />
                     </Box>
                   )
@@ -392,24 +407,30 @@ const CreateLeagueBuild: React.FunctionComponent<CreateLeagueInterface> = ({
                   }}
                   value={currentChamp}
                 >
-                  <MenuItem value=""></MenuItem>
-                  {championSelection.map(champion => (
-                    <MenuItem key={champion.id} value={champion.id}>
-                      {champion.name}
-                    </MenuItem>
-                  ))}
+                  <MenuItem value="Select">
+                    Select your champion for the build
+                  </MenuItem>
+                  {championSelection
+                    .sort((a, b) => (a.name < b.name ? -1 : 1))
+                    .map(champion => (
+                      <MenuItem
+                        key={champion.id}
+                        value={champion.id}
+                        className={classes.champSelect}
+                      >
+                        {champion.name}
+                        <img
+                          src={`https://ddragon.leagueoflegends.com/cdn/10.2.1/img/champion/${champion.id}.png`}
+                          width={40}
+                          height={40}
+                        />
+                      </MenuItem>
+                    ))}
                 </Select>
               </Box>
             )}
           </Box>
-          <Box
-            marginLeft={3}
-            maxHeight={175}
-            display="flex"
-            flexWrap="wrap"
-            flex={2}
-            overflow="scroll"
-          >
+          <Box marginLeft={3} display="flex" flexWrap="wrap" flex={2}>
             {itemSelection.map((item, index) => (
               <Box
                 key={item.id}
@@ -420,12 +441,18 @@ const CreateLeagueBuild: React.FunctionComponent<CreateLeagueInterface> = ({
                   width={50}
                   height={50}
                   src={`http://ddragon.leagueoflegends.com/cdn/10.2.1/img/item/${item.image}`}
+                  alt={item.name}
                 />
               </Box>
             ))}{' '}
           </Box>
         </Box>
-        <Box display="flex" alignItems="flex-end" flexDirection="column">
+        <Box
+          display="flex"
+          alignItems="flex-end"
+          flexDirection="column"
+          marginY={2}
+        >
           {isSubmitError && (
             <Typography variant="caption" color="error">
               Please select at least 1 item and a champion for the build
@@ -437,7 +464,7 @@ const CreateLeagueBuild: React.FunctionComponent<CreateLeagueInterface> = ({
               if (
                 selectedItems.filter(data => typeof data !== 'undefined')
                   .length > 0 &&
-                currentChamp !== null
+                currentChamp !== 'Select'
               ) {
                 setSubmitError(false);
 
@@ -459,7 +486,7 @@ const CreateLeagueBuild: React.FunctionComponent<CreateLeagueInterface> = ({
         variant="contained"
         onClick={() => setCreateLeagueOpen(!isCreateLeagueOpen)}
       >
-        Create a new build
+        {isCreateLeagueOpen ? 'Close' : 'Open'} Build creation menu
       </Button>
     </Box>
   );
