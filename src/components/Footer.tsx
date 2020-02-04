@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
       textAlign: 'center',
     },
     fontWeight: theme.typography.fontWeightBold,
+    textAlign: 'center',
   },
   flexDoubleCol: {
     display: 'flex',
@@ -33,6 +34,11 @@ const useStyles = makeStyles(theme => ({
       textAlign: 'center',
     },
   },
+  logoSize: {
+    objectFit: 'contain',
+    maxHeight: '50px',
+    marginTop: '15px',
+  },
 }));
 
 interface LinkProps {
@@ -45,6 +51,29 @@ interface SubtitleProps {
   children: ReactNode;
   className: string;
 }
+interface GamesIcons {
+  name: string;
+  link: string;
+  gameIcon: string;
+}
+[];
+const Logos: GamesIcons[] = [
+  {
+    name: 'League Of Legends',
+    link: 'https://play.lan.leagueoflegends.com/es_MX',
+    gameIcon: './league.png',
+  },
+  {
+    name: 'Dota 2',
+    link: 'http://es.dota2.com/',
+    gameIcon: './dota-2.png',
+  },
+  {
+    name: 'Overwatch',
+    link: 'https://playoverwatch.com/es-es/',
+    gameIcon: './over.png',
+  },
+];
 
 const Subtitle: React.FunctionComponent<SubtitleProps> = ({
   className,
@@ -94,17 +123,19 @@ export default () => {
         </Grid>
         <Grid item xs={false} md={1} />
         <Grid item xs={12} md={6}>
-          <Subtitle className={classes.SubtitleText}>Logos</Subtitle>
+          <Subtitle className={classes.SubtitleText}>Featured Games</Subtitle>
           <Box display="flex" flexDirection="row" justifyContent="space-evenly">
-            <FooterLink className={classes.linkText} link="#">
-              League Logo
-            </FooterLink>
-            <FooterLink className={classes.linkText} link="#">
-              Dota Logo
-            </FooterLink>
-            <FooterLink className={classes.linkText} link="#">
-              Overwatch Logo
-            </FooterLink>
+            {Logos.map(icon => (
+              <Box marginRight="15px">
+                <Link key={icon.name} target="_blank" href={icon.link}>
+                  <img
+                    className={classes.logoSize}
+                    src={icon.gameIcon}
+                    alt="icon"
+                  />
+                </Link>
+              </Box>
+            ))}
           </Box>
         </Grid>
       </Grid>
