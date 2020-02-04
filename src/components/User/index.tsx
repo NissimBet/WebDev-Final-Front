@@ -243,8 +243,8 @@ const LeagueBuild: React.FunctionComponent<{
         flexWrap="wrap"
         justifyContent="center"
       >
-        {items.map(item => (
-          <Box key={item.id} width={[1, 1 / 3, 1 / 3]}>
+        {items.map((item, index) => (
+          <Box key={`${item._id} - ${index}`} width={[1, 1 / 3, 1 / 3]}>
             <LeagueItem {...item} />
           </Box>
         ))}
@@ -482,6 +482,7 @@ interface UserData {
 }
 
 interface LeagueItemData {
+  _id: string;
   id: string;
   name: string;
   description: string;
@@ -532,6 +533,7 @@ const UserPage: NextPage<UserPageProps> = ({
   leagueItems,
   leagueBuilds,
 }) => {
+  console.log('ENTERED RENDERING');
   return (
     <Box>
       <Typography variant="h4" align="center">
