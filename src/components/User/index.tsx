@@ -436,8 +436,8 @@ const CreateLeagueBuild: React.FunctionComponent<CreateLeagueInterface> = ({
             variant="outlined"
             onClick={() => {
               if (
-                selectedItems.filter(data => typeof data === 'undefined')
-                  .length !== 0 &&
+                selectedItems.filter(data => typeof data !== 'undefined')
+                  .length > 0 &&
                 currentChamp !== null
               ) {
                 setSubmitError(false);
