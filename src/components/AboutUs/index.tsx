@@ -53,24 +53,67 @@ const useStyles = makeStyles(theme => ({
 interface PersonDataInterface {
   name: string;
   description: string;
-  socialLinks: string[];
+  socialLinks: {
+    name: string;
+    link: string;
+    iconLink: string;
+  }[];
+
+  image: string;
 }
 
 const personData: PersonDataInterface[] = [
   {
-    name: 'MArk Zuckeberg',
-    description: 'Our Lord and Savior, Mark zuckerberg',
-    socialLinks: ['Gtihub', 'twitter', 'instagram'],
-  },
-  {
-    name: 'Carlos Tamez',
-    description: 'CS student at Tecnologico de Monterrey',
-    socialLinks: ['Gtihub', 'twitter', 'instagram'],
+    name: 'Nissim Betesh',
+    description: 'CS Student at Tecnologico de Monterrey, 8th semester',
+    socialLinks: [
+      {
+        name: 'Github',
+        link: 'https://www.github.com/NissimBet',
+        iconLink: './github.svg',
+      },
+      {
+        name: 'Facebook',
+        link: 'https://www.facebook.com/nissim.betesh.1',
+        iconLink: './facebook.svg',
+      },
+    ],
+    image: './Nissim.jpg',
   },
   {
     name: 'Alfredo Salazar',
-    description: 'CS student at Tecnologico de Monterrey',
-    socialLinks: ['Gtihub', 'twitter', 'instagram'],
+    description:
+      'Web Development Professor at Tecnologico de Monterrey and consultor at Thinkful. Master in Computer Science at ESSEX University',
+    socialLinks: [
+      {
+        name: 'Github',
+        link: 'https://www.github.com/Alfredo08',
+        iconLink: './github.svg',
+      },
+      {
+        name: 'Class Google Site',
+        link: 'https://sites.google.com/site/dawinv20/',
+        iconLink: './google.svg',
+      },
+    ],
+    image: './Alfredo.jpg',
+  },
+  {
+    name: 'Carlos Tamez',
+    description: 'CS student at Tecnologico de Monterrey, 8th semester',
+    socialLinks: [
+      {
+        name: 'Github',
+        link: 'https://www.github.com/CyberFroppy',
+        iconLink: './github.svg',
+      },
+      {
+        name: 'Facebook',
+        link: 'https://www.facebook.com/carlos.tamez.21',
+        iconLink: './facebook.svg',
+      },
+    ],
+    image: './Carlos.jpg',
   },
 ];
 interface PersonCardInterface extends PersonDataInterface {
@@ -84,18 +127,35 @@ const Person: React.FunctionComponent<PersonCardInterface> = ({
   socialLinks,
   handleArrowPress,
   expanded,
+  image,
 }) => {
   const classes = useStyles({});
   return (
     <Card className={classes.card}>
       <CardContent>
-        <Avatar
-          className={classes.ourFaces}
-          src="./nissim.jpg"
-          alt="Nissim Betesh"
-        />
+        <Avatar className={classes.ourFaces} src={image} alt={name} />
         <CardActions disableSpacing>
-          <Link href="https://www.github.com/">{socialLinks[0]}</Link>
+          <Box
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            width={1}
+            justifyContent="flex-start"
+            marginX="15px"
+          >
+            {socialLinks.map(link => (
+              <Box marginRight="15px">
+                <Link key={link.name} target="_blank" href={link.link}>
+                  <img
+                    src={link.iconLink}
+                    alt="icon"
+                    width="30px"
+                    height="30px"
+                  />
+                </Link>
+              </Box>
+            ))}
+          </Box>
           <IconButton
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded,
@@ -129,26 +189,28 @@ export default () => {
       <Typography paragraph className={classes.title}>
         About us
       </Typography>
-      {/* estudiantes del tec de mty */}
+      {/*estudiantes del tec de mty*/}
       <Typography paragraph>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi ea
-        tenetur nulla ab sapiente perferendis hic, dolore dolores deleniti minus
-        debitis quibusdam illo at excepturi delectus ad omnis, nobis similique.
+        We are studying Computer Science at Tecnologico de Monterrey currently
+        on our 8th semester, this winter period we are coursing Web Development
+        under the mentoring of our Professor Alfredo Salazar during January of
+        2020.
       </Typography>
       {/* proyecto de desarrollo de aplicaciones */}
       <Typography paragraph>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus fuga
-        atque libero? Obcaecati veritatis eaque dolorum. Placeat facilis impedit
-        explicabo ut, fuga veniam illo ipsa harum dolores perspiciatis
-        reiciendis quod dolor sit animi sint distinctio!
+        This web project is part of the course with the intention of putting
+        into practice everything that we have learned through this course. Due
+        to the short duration of the course it was a big challenge for us to
+        complete it, but we are happy with our final version.
       </Typography>
       {/* objetivo del proyecto */}
       <Typography paragraph>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus quae vel
-        labore eveniet iure ullam quibusdam est deserunt optio, nemo fugit
-        maxime, voluptates neque? Culpa ut minima repellat consequuntur
-        consequatur quaerat laudantium, ipsam mollitia? Repudiandae at magni est
-        hic porro.
+        Our objective is to help gamers who are passionate for different
+        videogames like League of Legends, Dota 2, and Overwatch to share their
+        builds or equipment of their favorite champions and compare them with
+        other players. We believe that our project will help gamers to achieve a
+        whole new level by improving their builds, therefore their number of
+        victories will raise.
       </Typography>
       <Typography className={classes.title}>Who we are</Typography>
       <Box
