@@ -540,7 +540,7 @@ const UserPage: NextPage<UserPageProps> = ({
         Your builds
       </Typography>
       <Box display="flex" flexDirection="row" flexWrap="wrap">
-        {leagueBuilds &&
+        {/* {leagueBuilds &&
           leagueBuilds.map(build => (
             <Box key={build.creator + build.createdAt} width={[1 / 2, 1 / 3]}>
               <LeagueBuild
@@ -549,7 +549,7 @@ const UserPage: NextPage<UserPageProps> = ({
                 buildData={build}
               />
             </Box>
-          ))}
+          ))} */}
       </Box>
       {/* <Typography>create build</Typography> */}
       {leagueItems && (
