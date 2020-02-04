@@ -61,8 +61,99 @@ const GetAllChamps = async () => {
   return allChampionsJSON;
 };
 
+const SetBuildPrivacy = async (buildId: string, privacy: boolean) => {
+  const token = cookie.get('token');
+  const addStatus = await fetch(
+    `${process.env.BACKEND_URL}league/build/privacy`,
+    {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ private: privacy, buildId: buildId }),
+    }
+  );
+  if (addStatus.status !== 200) {
+    return false;
+  }
+  return true;
+};
+
+const CreateLeagueBuild = async (
+  items: Array<string>,
+  isPrivate: boolean = true,
+  championId: string
+) => {
+  const token = cookie.get('token');
+  const newBuild = await fetch(`${process.env.BACKEND_URL}league/builds/new`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      Authorization: 'Bearer ' + token,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      items: items,
+      private: isPrivate,
+      champion: championId,
+    }),
+  });
+  if (newBuild.status === 200) {
+    const newBuildData = await newBuild.json();
+    return newBuildData;
+  } else {
+    return null;
+  }
+};
+
+const RemoveLeagueBuild = async (buildId: string) => {
+  const token = cookie.get('token');
+  const deleteStatus = await fetch(
+    `${process.env.BACKEND_URL}league/builds/delete/${buildId}`,
+    {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  if (deleteStatus.status !== 204) {
+    return false;
+  }
+  return true;
+};
+
 const GetUserData = async (token: string) => {
   const userData = await fetch(`${process.env.BACKEND_URL}user/get-data`, {
+    credentials: 'include',
+    headers: {
+      Authorization: 'Bearer ' + token,
+    },
+  });
+  return await userData.json();
+};
+
+const GetLeagueItems = async () => {
+  const allItems = await fetch(`${process.env.BACKEND_URL}league/items/last`);
+  const allItemsJSON = await allItems.json();
+  return allItemsJSON;
+};
+
+const GetDotaItems = async () => {
+  const allItems = await fetch(`${process.env.BACKEND_URL}dota/items`);
+  const allItemsJSON = await allItems.json();
+  return allItemsJSON;
+};
+
+const GetUserLeagueBuilds = async (token: string) => {
+  const userData = await fetch(`${process.env.BACKEND_URL}league/builds/user`, {
     credentials: 'include',
     headers: {
       Authorization: 'Bearer ' + token,
@@ -74,42 +165,81 @@ const GetUserData = async (token: string) => {
 const UserProfile: NextPage = props => {
   const token = cookie.get('token');
 
-  const [isUserDataLoading, setUserLoadingQuery] = useState(true);
+  const [isQueryLoading, setQueryLoading] = useState(true);
   const [userData, setUserData] = useState();
   const [allChampions, setAllChampions] = useState({
     league: [],
     dota: [],
     overwatch: [],
   });
-  const [isChampionsDataLoading, setChampionDataLoading] = useState(true);
+  const [leagueItems, setLeagueItems] = useState();
+  const [userLeagueBuilds, setUserLeagueBuilds] = useState();
+
   useEffect(() => {
-    setUserLoadingQuery(true);
+    setQueryLoading(true);
     GetUserData(token).then(data => {
       setUserData(data);
-      setUserLoadingQuery(false);
+      setQueryLoading(false);
     });
-    setChampionDataLoading(true);
+    setQueryLoading(true);
     GetAllChamps().then(champs => {
       setAllChampions(champs);
-      setChampionDataLoading(false);
+      setQueryLoading(false);
+    });
+    setQueryLoading(true);
+    GetLeagueItems().then(items => {
+      setLeagueItems(items);
+      setQueryLoading(false);
+    });
+    setQueryLoading(true);
+    GetUserLeagueBuilds(token).then(builds => {
+      setUserLeagueBuilds(builds);
+      setQueryLoading(false);
     });
   }, []);
-  console.log(userData);
   return (
     <React.Fragment>
       <Head>
-        <title>{isUserDataLoading ? 'Your Profile' : userData.username}</title>
+        <title>Your Profile</title>
       </Head>
-      {!isUserDataLoading && !isChampionsDataLoading ? (
+      {!isQueryLoading && userData ? (
         <User
           handleRemoveChamp={RemoveFavoriteChamp}
           handleAddChamp={AddFavoriteChamp}
+          handlechangePrivacy={SetBuildPrivacy}
+          handleCreateLeagueBuild={async (
+            items: Array<string>,
+            isPrivate: boolean = true,
+            championId: string
+          ) => {
+            const data = await CreateLeagueBuild(items, isPrivate, championId);
+            if (data) {
+              setUserLeagueBuilds([...userLeagueBuilds, data]);
+              return true;
+            }
+            return false;
+          }}
+          handleRemoveLeagueBuild={async (buildId: string) => {
+            const status = await RemoveLeagueBuild(buildId);
+            if (status) {
+              const prevLeagueBuilds = [...userLeagueBuilds];
+              const index = prevLeagueBuilds.findIndex(
+                build => build._id === buildId
+              );
+              prevLeagueBuilds.splice(index, 1);
+              setUserLeagueBuilds(prevLeagueBuilds);
+              return true;
+            }
+            return false;
+          }}
           userData={userData}
           champions={{
             league: allChampions.league,
             dota: allChampions.dota,
             overwatch: allChampions.overwatch,
           }}
+          leagueItems={leagueItems}
+          leagueBuilds={userLeagueBuilds}
         />
       ) : (
         <Typography>Loading...</Typography>

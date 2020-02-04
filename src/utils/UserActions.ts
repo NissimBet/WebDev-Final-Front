@@ -22,16 +22,18 @@ export const loginUser = async (email: string, password: string) => {
     },
     body: JSON.stringify({ email, password }),
   });
-  const jwt = await userJWT.json();
-
-  if (userJWT) {
+  if (userJWT.status === 200) {
+    const jwt = await userJWT.json();
     cookie.set('token', jwt);
-    Router.push('/');
-    return jwt;
   } else {
     cookie.remove('token');
-    return null;
   }
+  /**
+   * 200 => ok
+   * 409 => email not existant
+   * 404 not existant user
+   */
+  return userJWT.status;
 };
 
 export const registerUser = async ({
@@ -47,8 +49,13 @@ export const registerUser = async ({
     },
     body: JSON.stringify({ email, password, username }),
   });
-  const userJSON = await user.json();
-
-  Router.push('/login');
-  return userJSON;
+  /**
+   * 201 => user created
+   * 409 => email in use
+   */
+  if (user.status === 200) {
+    return true;
+  } else {
+    return false;
+  }
 };

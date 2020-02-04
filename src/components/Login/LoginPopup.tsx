@@ -15,8 +15,8 @@ import {
 } from '@material-ui/core';
 import { object, string } from 'yup';
 import NextLink from 'next/link';
+import Router from 'next/router';
 import { loginUser } from '../../utils/UserActions';
-import { useLoginContext } from '../../utils/UserContext';
 
 const useStyle = makeStyles({
   errorMessage: {
@@ -33,7 +33,7 @@ const validator = object().shape({
 
 export default () => {
   const [isDialogOpen, setOpenDialog] = useState(false);
-
+  const [loginError, setLoginError] = useState(false);
   const classes = useStyle({});
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -48,6 +48,8 @@ export default () => {
         Login
       </Button>
       <Dialog
+        fullWidth
+        maxWidth="sm"
         open={isDialogOpen}
         onClose={handleClickClose}
         aria-labelledby="login-dialog-title"
@@ -59,9 +61,19 @@ export default () => {
             onSubmit={async (values, actions) => {
               actions.setSubmitting(true);
 
-              await loginUser(values.email, values.password);
+              const successStatus = await loginUser(
+                values.email,
+                values.password
+              );
 
-              handleClickClose();
+              if (successStatus !== 200) {
+                setLoginError(true);
+              } else {
+                setLoginError(false);
+                handleClickClose();
+                Router.push('/');
+              }
+
               actions.setSubmitting(false);
             }}
             validationSchema={validator}
@@ -71,6 +83,18 @@ export default () => {
                 <DialogContentText>
                   Login to our site to use all of its awesome features
                 </DialogContentText>
+
+                {loginError && (
+                  <DialogContentText
+                    className={classes.errorMessage}
+                    color="error"
+                  >
+                    Email or password combination does not exist consider{' '}
+                    <NextLink href="/register">
+                      <Link href="/register">registering</Link>
+                    </NextLink>
+                  </DialogContentText>
+                )}
 
                 <TextField
                   autoFocus

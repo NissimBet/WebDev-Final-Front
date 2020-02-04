@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -11,7 +11,7 @@ import NextLink from 'next/link';
 import { Formik } from 'formik';
 import { string, object } from 'yup';
 import { loginUser } from '../../utils/UserActions';
-import { useLoginContext } from '../../utils/UserContext';
+import Router from 'next/router';
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '90%',
     marginLeft: 'auto',
     marginRight: 'auto',
+  },
+  errorMessage: {
+    marginTop: theme.spacing(3),
   },
 }));
 
@@ -30,6 +33,7 @@ const validation = object().shape({
 });
 
 export default () => {
+  const [loginError, setLoginError] = useState(false);
   const classes = useStyles({});
 
   return (
@@ -37,13 +41,20 @@ export default () => {
       <Typography align="center" className={classes.title}>
         Login to see your champions and loadouts!
       </Typography>
+
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={async (values, actions) => {
-          console.log(values);
           actions.setSubmitting(true);
 
-          await loginUser(values.email, values.password);
+          const successStatus = await loginUser(values.email, values.password);
+
+          if (successStatus !== 200) {
+            setLoginError(true);
+          } else {
+            setLoginError(false);
+            Router.push('/');
+          }
 
           actions.setSubmitting(false);
         }}
@@ -51,6 +62,18 @@ export default () => {
       >
         {formikBag => (
           <form onSubmit={formikBag.handleSubmit}>
+            {loginError && (
+              <Typography
+                className={classes.errorMessage}
+                align="center"
+                color="error"
+              >
+                Email or password combination does not exist consider{' '}
+                <NextLink href="/register">
+                  <Link href="/register">registering</Link>
+                </NextLink>
+              </Typography>
+            )}
             <Box
               display="flex"
               flexDirection="column"

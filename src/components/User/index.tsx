@@ -7,6 +7,11 @@ import {
   Button,
   Collapse,
   IconButton,
+  Select,
+  MenuItem,
+  Switch,
+  Grid,
+  Divider,
 } from '@material-ui/core';
 import { NextPage } from 'next';
 import differenceBy from 'lodash.differenceby';
@@ -24,7 +29,7 @@ const useStyles = makeStyles(theme => ({
       marginRight: 0,
     },
     [theme.breakpoints.down('md')]: {
-      margin: `${theme.spacing(2)}px 0`,
+      margin: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
     },
   },
   removeButton: {
@@ -51,6 +56,19 @@ const useStyles = makeStyles(theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
+  buildContainer: {
+    border: `1px solid ${theme.palette.primary.light}`,
+    boxShadow: theme.shadows[1],
+    margin: theme.spacing(2),
+    padding: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    '& img': {
+      maxWidth: '50px',
+      maxHeight: '50px',
+      objectFit: 'contain',
+    },
+  },
 }));
 
 interface FavoriteChampListProps {
@@ -70,8 +88,14 @@ const FavoriteChampList: React.FunctionComponent<FavoriteChampListProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const classes = useStyles({});
-  const [championNames, setChampionNames] = useState(champions);
-  const missingChamps = differenceBy(allChampions, championNames, 'name');
+  const [championNames, setChampionNames] = useState(
+    champions.sort((a, b) => (a.name < b.name ? -1 : 1))
+  );
+  const missingChamps = differenceBy(
+    allChampions,
+    championNames,
+    'name'
+  ).sort((a, b) => (a.name < b.name ? -1 : 1));
   return (
     <Paper className={classes.champList}>
       <Typography gutterBottom variant="h5" paragraph>
@@ -87,7 +111,9 @@ const FavoriteChampList: React.FunctionComponent<FavoriteChampListProps> = ({
                   const remainingChamps = championNames.filter(
                     name => name !== champ
                   );
-                  setChampionNames(remainingChamps);
+                  setChampionNames(
+                    remainingChamps.sort((a, b) => (a.name < b.name ? -1 : 1))
+                  );
                 }
               }}
               key={champ.id}
@@ -133,17 +159,18 @@ const FavoriteChampList: React.FunctionComponent<FavoriteChampListProps> = ({
                 variant="subtitle1"
                 onClick={async () => {
                   const success = await handleAddChamp(game, id);
-                  console.log(id, 'add');
                   if (success) {
                     const erasedIndex = missingChamps.findIndex(
                       ({ id: champId }) => id === champId
                     );
-                    setChampionNames([
-                      ...championNames.filter(
-                        ({ id: champId }) => champId !== id
-                      ),
-                      missingChamps[erasedIndex],
-                    ]);
+                    setChampionNames(
+                      [
+                        ...championNames.filter(
+                          ({ id: champId }) => champId !== id
+                        ),
+                        missingChamps[erasedIndex],
+                      ].sort((a, b) => (a.name < b.name ? -1 : 1))
+                    );
                   }
                 }}
               >
@@ -187,8 +214,261 @@ const FavoriteChamp: React.FunctionComponent<FavoriteChampProps> = ({
   );
 };
 
+const LeagueBuild: React.FunctionComponent<{
+  buildData: LeagueBuildData;
+  handleChangePrivacy: (buildId: string, privacy: boolean) => Promise<boolean>;
+  handleRemoveBuild: (buildId: string) => Promise<boolean>;
+}> = ({
+  buildData: { _id, items, private: isPrivate, champion },
+  handleChangePrivacy,
+  handleRemoveBuild,
+}) => {
+  const classes = useStyles({});
+  const [status, setStatus] = useState(isPrivate);
+  const [queryLoading, setQueryLoading] = useState(false);
+  return (
+    <Box className={classes.buildContainer}>
+      <Box marginLeft="auto">
+        <Button
+          className={classes.removeButton}
+          type="button"
+          onClick={() => handleRemoveBuild(_id)}
+        >
+          x
+        </Button>
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="row"
+        flexWrap="wrap"
+        justifyContent="center"
+      >
+        {items.map(item => (
+          <Box key={item.id} width={[1, 1 / 3, 1 / 3]}>
+            <LeagueItem {...item} />
+          </Box>
+        ))}
+      </Box>
+      <Box display="flex" marginY={3} marginRight={2} alignItems="center">
+        <img
+          src={`https://ddragon.leagueoflegends.com/cdn/10.2.1/img/champion/${champion.id}.png`}
+          width="50px"
+          height="50px"
+        />
+        <Typography>{champion.name}</Typography>
+      </Box>
+      <Divider light />
+      <Typography variant="caption">
+        {status
+          ? 'This build is currently private and is not currently shared with other people'
+          : 'This build is currently public and anyone can see it'}
+      </Typography>
+      <Button
+        disabled={queryLoading}
+        onClick={async () => {
+          setQueryLoading(true);
+          await handleChangePrivacy(_id, !status);
+          setQueryLoading(false);
+          setStatus(!status);
+        }}
+        variant="outlined"
+        fullWidth
+      >
+        Click here to make it {status ? 'public' : 'private'}
+      </Button>
+    </Box>
+  );
+};
+
+const LeagueItem: React.FunctionComponent<LeagueItemData> = ({
+  image,
+  name,
+}) => {
+  return (
+    <Box display="flex" alignItems="center" flexDirection="column" marginY={1}>
+      <img
+        src={`http://ddragon.leagueoflegends.com/cdn/10.2.1/img/item/${image}`}
+        alt={name}
+      />
+      <Typography align="center" variant="subtitle2">
+        {name}
+      </Typography>
+    </Box>
+  );
+};
+
+interface CreateLeagueInterface {
+  handleCreateBuild: (
+    items: Array<string>,
+    isPrivate: boolean,
+    championId: string
+  ) => Promise<boolean>;
+  itemSelection: Array<LeagueItemData>;
+  championSelection: Array<ChampionData>;
+}
+
+const CreateLeagueBuild: React.FunctionComponent<CreateLeagueInterface> = ({
+  handleCreateBuild,
+  itemSelection,
+  championSelection,
+}) => {
+  const [isPrivate, setPrivacy] = useState(false);
+  const [currentChamp, setCurrentChamp] = useState('');
+  const [selectedItems, setSelectedItems] = useState([
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ]);
+  const [isCreateLeagueOpen, setCreateLeagueOpen] = useState(false);
+  const [isSubmitError, setSubmitError] = useState(false);
+
+  const selectNewItem = (index: number) => {
+    const undefinedIndex = selectedItems.findIndex(
+      val => typeof val === 'undefined'
+    );
+    if (undefinedIndex >= 0) {
+      const newItems = [...selectedItems];
+      newItems[undefinedIndex] = itemSelection[index];
+      setSelectedItems(newItems);
+    }
+  };
+
+  const removeItemAtIndex = (id: string) => {
+    const itemIndex = selectedItems.findIndex(val => val && val.id === id);
+    if (itemIndex >= 0) {
+      const newItems = [...selectedItems];
+      newItems[itemIndex] = undefined;
+      setSelectedItems(newItems);
+    }
+  };
+
+  return (
+    <Box marginY={3}>
+      <Collapse in={isCreateLeagueOpen} unmountOnExit timeout="auto">
+        <Typography variant="h5">New Build</Typography>
+        <Grid component="label" container alignItems="center" spacing={1}>
+          <Grid item>Public</Grid>
+          <Grid item>
+            <Switch
+              checked={isPrivate}
+              onChange={() => setPrivacy(!isPrivate)}
+              value="isPrivate"
+            />
+          </Grid>
+          <Grid item>Private</Grid>
+        </Grid>
+        <Box display="flex" flexDirection="column">
+          <Box marginY={3} display="flex">
+            <Box display="flex" flex={1} flexWrap="wrap">
+              {selectedItems.map(
+                (item, index) =>
+                  item && (
+                    <Box
+                      key={`${item.id} - ${index}`}
+                      marginX={1}
+                      onClick={() => removeItemAtIndex(item.id)}
+                    >
+                      <img
+                        width={50}
+                        height={50}
+                        src={`http://ddragon.leagueoflegends.com/cdn/10.2.1/img/item/${item.image}`}
+                      />
+                    </Box>
+                  )
+              )}
+            </Box>
+            {championSelection && (
+              <Box>
+                <Typography variant="subtitle2">
+                  Select your champion
+                </Typography>
+                <Select
+                  labelId="ChampionSelection"
+                  onChange={event => {
+                    console.log(event.target);
+                    setCurrentChamp(event.target.value as string);
+                  }}
+                  value={currentChamp}
+                >
+                  <MenuItem value=""></MenuItem>
+                  {championSelection.map(champion => (
+                    <MenuItem key={champion.id} value={champion.id}>
+                      {champion.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+            )}
+          </Box>
+          <Box
+            marginLeft={3}
+            maxHeight={175}
+            display="flex"
+            flexWrap="wrap"
+            flex={2}
+            overflow="scroll"
+          >
+            {itemSelection.map((item, index) => (
+              <Box
+                key={item.id}
+                marginX={1}
+                onClick={() => selectNewItem(index)}
+              >
+                <img
+                  width={50}
+                  height={50}
+                  src={`http://ddragon.leagueoflegends.com/cdn/10.2.1/img/item/${item.image}`}
+                />
+              </Box>
+            ))}{' '}
+          </Box>
+        </Box>
+        <Box display="flex" alignItems="flex-end" flexDirection="column">
+          {isSubmitError && (
+            <Typography variant="caption" color="error">
+              Please select at least 1 item and a champion for the build
+            </Typography>
+          )}
+          <Button
+            variant="outlined"
+            onClick={() => {
+              if (
+                selectedItems.filter(data => typeof data === 'undefined')
+                  .length !== 0 &&
+                currentChamp !== null
+              ) {
+                setSubmitError(false);
+
+                handleCreateBuild(
+                  selectedItems.filter(val => typeof val !== 'undefined'),
+                  isPrivate,
+                  currentChamp
+                );
+              } else {
+                setSubmitError(true);
+              }
+            }}
+          >
+            Create Build
+          </Button>
+        </Box>
+      </Collapse>
+      <Button
+        variant="contained"
+        onClick={() => setCreateLeagueOpen(!isCreateLeagueOpen)}
+      >
+        Create a new build
+      </Button>
+    </Box>
+  );
+};
+
 interface ChampionData {
   id: string;
+  _id: string;
   name: string;
 }
 
@@ -202,6 +482,26 @@ interface UserData {
   };
 }
 
+interface LeagueItemData {
+  id: string;
+  name: string;
+  description: string;
+  plaintext: string;
+  gold: number;
+  image: string;
+  into: [string];
+  from: [string];
+}
+
+interface LeagueBuildData {
+  _id: string;
+  creator: string;
+  items: Array<LeagueItemData>;
+  private: boolean;
+  createdAt: Date;
+  champion: ChampionData;
+}
+
 interface UserPageProps {
   userData: UserData;
   champions: {
@@ -209,30 +509,56 @@ interface UserPageProps {
     dota: Array<ChampionData>;
     overwatch: Array<ChampionData>;
   };
+  leagueItems: Array<LeagueItemData>;
+  leagueBuilds: Array<LeagueBuildData>;
   handleRemoveChamp: (game: string, champ: string) => Promise<boolean>;
   handleAddChamp: (game: string, champ: string) => Promise<boolean>;
+  handlechangePrivacy: (buildId: string, privacy: boolean) => Promise<boolean>;
+  handleRemoveLeagueBuild: (buildId: string) => Promise<boolean>;
+  handleCreateLeagueBuild: (
+    items: Array<string>,
+    isPrivate: boolean,
+    championId: string
+  ) => Promise<boolean>;
 }
 
 const UserPage: NextPage<UserPageProps> = ({
   userData,
   handleRemoveChamp,
   handleAddChamp,
+  handlechangePrivacy,
+  handleCreateLeagueBuild,
+  handleRemoveLeagueBuild,
   champions: { league, dota, overwatch },
+  leagueItems,
+  leagueBuilds,
 }) => {
-  const [favoriteChamps, setFavoriteChampions] = useState(
-    userData.favoriteChamps
-  );
-  console.log(favoriteChamps);
-
   return (
     <Box>
-      <Typography>Welcome</Typography>
-
-      <p>{userData.email}</p>
-      <p>{userData.username}</p>
-
-      <Typography>Your builds</Typography>
-      <Typography>create build</Typography>
+      <Typography variant="h4" align="center">
+        Your builds
+      </Typography>
+      <Box display="flex" flexDirection="row" flexWrap="wrap">
+        {leagueBuilds &&
+          leagueBuilds.map(build => (
+            <Box key={build.creator + build.createdAt} width={[1 / 2, 1 / 3]}>
+              <LeagueBuild
+                handleRemoveBuild={handleRemoveLeagueBuild}
+                handleChangePrivacy={handlechangePrivacy}
+                buildData={build}
+              />
+            </Box>
+          ))}
+      </Box>
+      {/* <Typography>create build</Typography> */}
+      {leagueItems && (
+        <CreateLeagueBuild
+          handleCreateBuild={handleCreateLeagueBuild}
+          itemSelection={leagueItems}
+          championSelection={league}
+        />
+      )}
+      {/* const { items, private: isPrivate } = req.body; */}
 
       {/* Favorites List */}
       <Typography align="center" variant="h4">
@@ -248,21 +574,21 @@ const UserPage: NextPage<UserPageProps> = ({
         <FavoriteChampList
           handleAddChamp={handleAddChamp}
           handleChampRemoval={handleRemoveChamp}
-          champions={favoriteChamps.league}
+          champions={userData.favoriteChamps.league}
           allChampions={league}
           game="league"
         />
         <FavoriteChampList
           handleAddChamp={handleAddChamp}
           handleChampRemoval={handleRemoveChamp}
-          champions={favoriteChamps.dota}
+          champions={userData.favoriteChamps.dota}
           allChampions={dota}
           game="dota"
         />
         <FavoriteChampList
           handleAddChamp={handleAddChamp}
           handleChampRemoval={handleRemoveChamp}
-          champions={favoriteChamps.overwatch}
+          champions={userData.favoriteChamps.overwatch}
           allChampions={overwatch}
           game="overwatch"
         />

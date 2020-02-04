@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
   TextField,
   Button,
   makeStyles,
+  Link,
 } from '@material-ui/core';
 
 import { Formik } from 'formik';
 import { string, object, ref } from 'yup';
 import { registerUser } from '../../utils/UserActions';
+import Router from 'next/router';
+import NextLink from 'next/link';
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -17,6 +20,10 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '90%',
     marginLeft: 'auto',
     marginRight: 'auto',
+  },
+  errorMessage: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
   },
 }));
 
@@ -33,6 +40,7 @@ const validation = object().shape({
 
 export default () => {
   const classes = useStyles({});
+  const [registerError, setRegisterError] = useState(false);
   return (
     <React.Fragment>
       <Typography align="center" className={classes.title}>
@@ -48,7 +56,14 @@ export default () => {
         onSubmit={async (values, actions) => {
           actions.setSubmitting(true);
 
-          await registerUser({ ...values });
+          const success = await registerUser({ ...values });
+
+          if (success) {
+            setRegisterError(false);
+            Router.push('/login');
+          } else {
+            setRegisterError(true);
+          }
 
           actions.setSubmitting(false);
         }}
@@ -166,6 +181,15 @@ export default () => {
                     </Typography>
                   )}
               </Box>
+              {registerError && (
+                <Typography className={classes.errorMessage} color="error">
+                  Email already in use,{' '}
+                  <NextLink href="/login">
+                    <Link href="/login">login</Link>
+                  </NextLink>{' '}
+                  now
+                </Typography>
+              )}
               <Button
                 type="submit"
                 disabled={formikBag.isSubmitting}

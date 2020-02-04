@@ -110,7 +110,7 @@ const NavMenu: React.FunctionComponent<{ name: string; site: SiteLink[] }> = ({
 
   return (
     <Box>
-      <Button variant="outlined" color="inherit" onClick={handleClick}>
+      <Button variant="text" color="inherit" onClick={handleClick}>
         {name}
         <svg
           className={classes.svg}
