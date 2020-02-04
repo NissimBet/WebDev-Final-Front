@@ -248,7 +248,11 @@ const LeagueBuild: React.FunctionComponent<{
         justifyContent="center"
       >
         {items.map((item, index) => (
-          <Box key={`${item._id} - ${index}`} width={[1, 1, 1 / 3]} marginX={2}>
+          <Box
+            key={`${item._id} - ${index}`}
+            width={[1 / 2, 1 / 2, 1 / 3]}
+            padding={2}
+          >
             <LeagueItem {...item} />
           </Box>
         ))}
@@ -568,7 +572,10 @@ const UserPage: NextPage<UserPageProps> = ({
       <Box display="flex" flexDirection="row" flexWrap="wrap">
         {leagueBuilds &&
           leagueBuilds.map(build => (
-            <Box key={build.creator + build.createdAt} width={[1 / 2, 1 / 3]}>
+            <Box
+              key={build.creator + build.createdAt}
+              width={[1, 1 / 2, 1 / 3]}
+            >
               <LeagueBuild
                 handleRemoveBuild={handleRemoveLeagueBuild}
                 handleChangePrivacy={handlechangePrivacy}

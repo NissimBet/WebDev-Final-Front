@@ -87,14 +87,22 @@ const LeagueBuild: React.FunctionComponent<{
         ))}
       </Box>
       <Divider light />
-      <Box display="flex" marginY={3} marginRight={2} alignItems="center">
+
+      <Box
+        display="flex"
+        marginY={3}
+        alignItems="center"
+        flexDirection="column"
+      >
         <img
           src={`https://ddragon.leagueoflegends.com/cdn/10.2.1/img/champion/${champion.id}.png`}
-          width="50px"
-          height="50px"
+          width="65px"
+          height="65px"
+          alt={champion.name}
         />
-        <Typography>{champion.name}</Typography>
+        <Typography variant="h6">{champion.name}</Typography>
       </Box>
+
       <Divider light />
       <Typography align="center" variant="caption">
         Created by user {creator.username}

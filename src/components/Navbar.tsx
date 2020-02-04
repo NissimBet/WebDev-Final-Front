@@ -11,6 +11,10 @@ import {
   Button,
   Menu,
   MenuItem,
+  Drawer,
+  List,
+  ListItem,
+  Divider,
 } from '@material-ui/core';
 
 import LoginDialog from './Login/LoginPopup';
@@ -140,6 +144,7 @@ const NavMenu: React.FunctionComponent<{ name: string; site: SiteLink[] }> = ({
 
 const Navbar = ({ isLoggedIn }: { isLoggedIn: Boolean }) => {
   const classes = useStyle({});
+  const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <React.Fragment>
       <AppBar position="fixed" style={{ height: 'auto' }}>
@@ -151,7 +156,7 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: Boolean }) => {
 
             <Box
               flex="3 0 auto"
-              display="flex"
+              display={['none', 'flex']}
               justifyContent="space-between"
               alignItems="center"
             >
@@ -194,6 +199,76 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: Boolean }) => {
                 )}
               </Box>
             </Box>
+          </Box>
+
+          {/* Mobile Drawer */}
+          <Box display={['initial', 'none']}>
+            <Button onClick={() => setDrawerOpen(!drawerOpen)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+              >
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+              </svg>
+            </Button>
+            <Drawer
+              anchor="left"
+              open={drawerOpen}
+              onClose={() => setDrawerOpen(false)}
+            >
+              <List>
+                {siteLinks.map(siteLink =>
+                  (siteLink as SiteLink).link ? (
+                    <ListItem>
+                      <NavLink
+                        link={(siteLink as SiteLink).link}
+                        name={siteLink.name}
+                        key={siteLink.name}
+                      />
+                    </ListItem>
+                  ) : (
+                    <React.Fragment>
+                      <Divider />
+                      {(siteLink as ComposedSiteLink).site.map(site => (
+                        <ListItem>
+                          <NavLink
+                            link={site.link}
+                            name={site.name}
+                            key={site.name}
+                          />
+                        </ListItem>
+                      ))}
+                      <Divider />
+                    </React.Fragment>
+                  )
+                )}
+                {isLoggedIn && (
+                  <ListItem>
+                    <NavLink link={'/user'} name={'Profile'} />
+                  </ListItem>
+                )}
+                {isLoggedIn && (
+                  <ListItem>
+                    <Button
+                      variant="text"
+                      color="inherit"
+                      onClick={() => {
+                        logout();
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  </ListItem>
+                )}
+                {!isLoggedIn && (
+                  <ListItem>
+                    <NavLink link={'/login'} name={'Login'} />
+                  </ListItem>
+                )}
+              </List>
+            </Drawer>
           </Box>
         </Toolbar>
       </AppBar>

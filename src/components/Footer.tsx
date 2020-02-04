@@ -56,7 +56,7 @@ interface GamesIcons {
   link: string;
   gameIcon: string;
 }
-[];
+
 const Logos: GamesIcons[] = [
   {
     name: 'League Of Legends',
@@ -65,7 +65,7 @@ const Logos: GamesIcons[] = [
   },
   {
     name: 'Dota 2',
-    link: 'http://es.dota2.com/',
+    link: 'https://es.dota2.com/',
     gameIcon: './dota-2.png',
   },
   {
@@ -131,7 +131,7 @@ export default () => {
                   <img
                     className={classes.logoSize}
                     src={icon.gameIcon}
-                    alt="icon"
+                    alt={icon.name}
                   />
                 </Link>
               </Box>
