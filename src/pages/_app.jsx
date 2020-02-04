@@ -35,7 +35,6 @@ MyApp.getInitialProps = async initialProps => {
   const { Component, ctx } = initialProps;
   let pageProps = {};
   const { token } = cookies(ctx);
-  console.log(cookies(ctx));
   const isLoggedIn = !!token;
 
   if (Component.getInitialProps) {

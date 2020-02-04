@@ -197,7 +197,6 @@ const UserProfile: NextPage = props => {
     });
     setQueryLoading(true);
     GetUserLeagueBuilds(token).then(builds => {
-      console.log(builds);
       if (builds) {
         setUserLeagueBuilds(builds);
       } else {
@@ -206,7 +205,6 @@ const UserProfile: NextPage = props => {
       setQueryLoading(false);
     });
   }, []);
-  console.log(userLeagueBuilds);
   return (
     <React.Fragment>
       <Head>
@@ -223,7 +221,6 @@ const UserProfile: NextPage = props => {
             championId: string
           ) => {
             const data = await CreateLeagueBuild(items, isPrivate, championId);
-            console.log(data);
             if (data) {
               setUserLeagueBuilds([...userLeagueBuilds, data]);
               return true;

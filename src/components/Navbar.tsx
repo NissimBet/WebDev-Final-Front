@@ -146,7 +146,7 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: Boolean }) => {
         <Toolbar className={classes.mainBg}>
           <Box className={classes.root}>
             <Box flex="1 0 auto" display="flex" alignItems="center">
-              <Typography>Dev Project</Typography>
+              <Typography>Game Monitor</Typography>
             </Box>
 
             <Box

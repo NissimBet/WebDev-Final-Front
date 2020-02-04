@@ -533,7 +533,6 @@ const UserPage: NextPage<UserPageProps> = ({
   leagueItems,
   leagueBuilds,
 }) => {
-  console.log('ENTERED RENDERING');
   return (
     <Box>
       <Typography variant="h4" align="center">

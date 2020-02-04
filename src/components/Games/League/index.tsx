@@ -118,7 +118,6 @@ export default () => {
       setQueryLoading(false);
     });
   }, []);
-  console.log(allBuilds);
   return (
     <Box>
       <Typography variant="h5">League of Legends builds</Typography>

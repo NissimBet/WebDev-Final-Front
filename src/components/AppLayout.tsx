@@ -48,7 +48,6 @@ const AppLayout: React.FunctionComponent<AppLayoutProps> = ({
   children,
   isLoggedIn,
 }) => {
-  console.log(isLoggedIn);
   return (
     <React.Fragment>
       <Head>
