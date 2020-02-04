@@ -19,7 +19,7 @@ import {
 
 import LoginDialog from './Login/LoginPopup';
 import { logout } from '../utils/Authentication';
-import { useLoginContext } from '../utils/UserContext';
+
 interface SiteLink {
   name: string;
   link: string;
