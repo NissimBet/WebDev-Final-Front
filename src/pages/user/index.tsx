@@ -159,7 +159,11 @@ const GetUserLeagueBuilds = async (token: string) => {
       Authorization: 'Bearer ' + token,
     },
   });
-  return await userData.json();
+  if (userData.status !== 404) {
+    return await userData.json();
+  } else {
+    return null;
+  }
 };
 
 const UserProfile: NextPage = props => {
@@ -193,7 +197,11 @@ const UserProfile: NextPage = props => {
     });
     setQueryLoading(true);
     GetUserLeagueBuilds(token).then(builds => {
-      setUserLeagueBuilds(builds);
+      if (builds) {
+        setUserLeagueBuilds(builds);
+      } else {
+        setUserLeagueBuilds([]);
+      }
       setQueryLoading(false);
     });
   }, []);

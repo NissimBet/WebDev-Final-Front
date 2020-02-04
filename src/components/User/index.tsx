@@ -388,7 +388,6 @@ const CreateLeagueBuild: React.FunctionComponent<CreateLeagueInterface> = ({
                 <Select
                   labelId="ChampionSelection"
                   onChange={event => {
-                    console.log(event.target);
                     setCurrentChamp(event.target.value as string);
                   }}
                   value={currentChamp}

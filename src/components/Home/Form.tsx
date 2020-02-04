@@ -65,7 +65,7 @@ export default () => {
               <Grid item xs={false} md={1} />
               <Grid item xs={12} md={7}>
                 <InputLabel>
-                  What champion you want to search for?
+                  What is your username for {formikBag.values.game}?
                   <Input
                     fullWidth={true}
                     autoFocus={true}
@@ -74,7 +74,7 @@ export default () => {
                     type="text"
                     name="search"
                     onChange={formikBag.handleChange}
-                    placeholder="Search for your champion"
+                    placeholder="Search for your recent games"
                   />
                 </InputLabel>
               </Grid>
