@@ -64,7 +64,7 @@ export default () => {
         onClose={handleClickClose}
         aria-labelledby="login-dialog-title"
       >
-        <DialogTitle id="login-dialog-title">Login to out website</DialogTitle>
+        <DialogTitle id="login-dialog-title">Login to our website</DialogTitle>
         <DialogContent>
           <Formik
             initialValues={{ email: '', password: '' }}

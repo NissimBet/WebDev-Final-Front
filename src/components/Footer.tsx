@@ -86,7 +86,7 @@ const FooterLink: React.FunctionComponent<LinkProps> = ({
   link,
 }) => (
   <NextLink href={link}>
-    <Link href={link} className={className}>
+    <Link href={link} className={className} align="center">
       {children}
     </Link>
   </NextLink>
@@ -126,8 +126,8 @@ export default () => {
           <Subtitle className={classes.SubtitleText}>Featured Games</Subtitle>
           <Box display="flex" flexDirection="row" justifyContent="space-evenly">
             {Logos.map(icon => (
-              <Box marginRight="15px">
-                <Link key={icon.name} target="_blank" href={icon.link}>
+              <Box marginRight={2} key={icon.name}>
+                <Link target="_blank" href={icon.link}>
                   <img
                     className={classes.logoSize}
                     src={icon.gameIcon}

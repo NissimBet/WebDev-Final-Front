@@ -1,19 +1,15 @@
 import cookie from 'js-cookie';
-import Router from 'next/router';
 import fetch from 'isomorphic-unfetch';
 
-interface LoginParams {
-  email: string;
-  password: string;
-}
+export type LoginUserFunction = (
+  email: string,
+  password: string
+) => Promise<number>;
 
-interface RegisterParams {
-  email: string;
-  password: string;
-  username: string;
-}
-
-export const loginUser = async (email: string, password: string) => {
+export const loginUser: LoginUserFunction = async (
+  email: string,
+  password: string
+) => {
   const userJWT = await fetch(`${process.env.BACKEND_URL}users/login`, {
     method: 'POST',
     headers: {
@@ -31,10 +27,17 @@ export const loginUser = async (email: string, password: string) => {
   /**
    * 200 => ok
    * 409 => email not existant
-   * 404 not existant user
+   * 404 => not existant user
    */
   return userJWT.status;
 };
+
+interface RegisterParams {
+  email: string;
+  password: string;
+  username: string;
+}
+export type RegisterUserFunction = ({ ...RegisterParams }) => Promise<boolean>;
 
 export const registerUser = async ({
   email,

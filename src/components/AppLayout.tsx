@@ -8,10 +8,6 @@ import { Paper, makeStyles } from '@material-ui/core';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-//import { UserSession } from '../types/temporal';
-// import { getCurrentUser } from '../hooks';
-import LoginContext, { useLoginContext } from '../utils/UserContext';
-
 const GlobalStyle = createGlobalStyle`
   html, body {
     min-height: 100vh;

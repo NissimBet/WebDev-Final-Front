@@ -50,11 +50,11 @@ const siteLinks: Array<SiteLink | ComposedSiteLink> = [
         name: 'League of Legends',
         link: '/games/league',
       },
-      /* {
-        name: 'Dota 2',
-        link: '/',
-      },
       {
+        name: 'Dota 2',
+        link: '/games/dota',
+      },
+      /* {
         name: 'Overwatch',
         link: '/',
       }, */
@@ -221,23 +221,18 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: Boolean }) => {
               <List>
                 {siteLinks.map(siteLink =>
                   (siteLink as SiteLink).link ? (
-                    <ListItem>
+                    <ListItem key={siteLink.name}>
                       <NavLink
                         link={(siteLink as SiteLink).link}
                         name={siteLink.name}
-                        key={siteLink.name}
                       />
                     </ListItem>
                   ) : (
-                    <React.Fragment>
+                    <React.Fragment key={siteLink.name}>
                       <Divider />
                       {(siteLink as ComposedSiteLink).site.map(site => (
-                        <ListItem>
-                          <NavLink
-                            link={site.link}
-                            name={site.name}
-                            key={site.name}
-                          />
+                        <ListItem key={site.name}>
+                          <NavLink link={site.link} name={site.name} />
                         </ListItem>
                       ))}
                       <Divider />

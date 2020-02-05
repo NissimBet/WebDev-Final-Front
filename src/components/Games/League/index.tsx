@@ -6,6 +6,8 @@ import {
   Divider,
   Button,
 } from '@material-ui/core';
+import LeagueBuild from './LeagueBuild';
+import { LeagueBuildData } from '../../../utils/DBInterfaces';
 
 const useStyles = makeStyles(theme => ({
   buildContainer: {
@@ -23,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface ChampionData {
+/* interface ChampionData {
   id: string;
   _id: string;
   name: string;
@@ -64,9 +66,9 @@ const LeagueItem: React.FunctionComponent<LeagueItemData> = ({
       </Typography>
     </Box>
   );
-};
+}; */
 
-const LeagueBuild: React.FunctionComponent<{
+/* const LeagueBuild: React.FunctionComponent<{
   buildData: LeagueBuildData;
 }> = ({ buildData: { items, champion, creator } }) => {
   const classes = useStyles({});
@@ -109,7 +111,7 @@ const LeagueBuild: React.FunctionComponent<{
       </Typography>
     </Box>
   );
-};
+}; */
 const GetAllPublicLeagueBuilds = async () => {
   const allBuilds = await fetch(`${process.env.BACKEND_URL}league/builds/all`);
   const allBuildsJSON = await allBuilds.json();
@@ -117,7 +119,7 @@ const GetAllPublicLeagueBuilds = async () => {
 };
 
 export default () => {
-  const [allBuilds, setAllBuilds] = useState();
+  const [allBuilds, setAllBuilds] = useState<Array<LeagueBuildData>>();
   const [isQueryLoading, setQueryLoading] = useState(true);
   useEffect(() => {
     setQueryLoading(true);
